@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Build With Pavel — Premium Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="../assets/css/app.css" />
+
+</head>
+<body>
+
+<!-- Top Nav -->
+    <header class="sticky top-0 z-50 border-b bg-white/80 backdrop-blur"
+      style="border-color:var(--border)">
+      <div
+        class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <button onclick="go('/')" class="flex items-center gap-2 text-left">
+          <span
+            class="inline-flex h-9 w-9 items-center justify-center rounded-xl border bg-white"
+            style="border-color:var(--border)">
+            <span class="text-sm font-semibold">BP</span>
+          </span>
+          <span>
+            <div class="text-base font-semibold tracking-tight">Build With
+              Pavel</div>
+            <div class="text-[11px]" style="color:var(--muted)">Bangla courses •
+              Real projects</div>
+          </span>
+        </button>
+
+        <nav class="hidden items-center gap-6 md:flex">
+          <button onclick="go('/')" class="text-sm hover:underline"
+            style="color:var(--muted)">Home</button>
+          <button onclick="go('/courses')" class="text-sm hover:underline"
+            style="color:var(--muted)">Courses</button>
+          <button onclick="go('/about')" class="text-sm hover:underline"
+            style="color:var(--muted)">আমাদের সম্পর্কে</button>
+          <button onclick="go('/faqs')" class="text-sm hover:underline"
+            style="color:var(--muted)">FAQs</button>
+          <button onclick="go('/contact')" class="text-sm hover:underline"
+            style="color:var(--muted)">Contact</button>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button onclick="toast('Sign in coming soon')"
+            class="hidden rounded-xl border px-4 py-2 text-sm hover:bg-black/5 md:inline-flex"
+            style="border-color:var(--border)">Sign in</button>
+          <button onclick="go('/courses')"
+            class="rounded-xl px-4 py-2 text-sm font-medium text-white hover:opacity-95"
+            style="background:var(--accent)">Get Started</button>
+          <button onclick="toggleMenu()"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-xl border md:hidden"
+            style="border-color:var(--border)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg"><path d="M4 7H20"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" /><path d="M4 12H20"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" /><path d="M4 17H20"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="hidden border-t bg-white"
+        style="border-color:var(--border)">
+        <div class="mx-auto max-w-6xl px-4 py-4 grid gap-2">
+          <button onclick="go('/'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">Home</button>
+          <button onclick="go('/courses'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">Courses</button>
+          <button onclick="go('/about'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">আমাদের সম্পর্কে</button>
+          <button onclick="go('/faqs'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">FAQs</button>
+          <button onclick="go('/contact'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">Contact</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Toast -->
+    <div id="toast"
+      class="fixed bottom-5 left-1/2 z-[100] hidden -translate-x-1/2 rounded-2xl border bg-white px-4 py-3 text-sm shadow"
+      style="border-color:var(--border)"></div>
+
+    <!-- App Root -->
+    <main id="app" class="mx-auto max-w-6xl px-4"></main>
+
+    <!-- Info Modal (Live batches) -->
+    <div id="modal"
+      class="fixed inset-0 z-[120] hidden items-center justify-center p-4">
+      <div class="absolute inset-0 modal-bg" onclick="closeModal()"></div>
+      <div
+        class="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow"
+        style="box-shadow:var(--shadow)">
+        <div class="flex items-center justify-between border-b px-5 py-4"
+          style="border-color:var(--border)">
+          <div>
+            <div class="text-sm font-semibold">How Live Courses Work</div>
+            <div class="text-xs" style="color:var(--muted)">Build With Pavel
+              sells <b>live batches</b> — not pre-recorded video
+              streaming.</div>
+          </div>
+          <button class="rounded-xl border px-3 py-2 text-sm hover:bg-black/5"
+            style="border-color:var(--border)"
+            onclick="closeModal()">Close</button>
+        </div>
+        <div class="p-6 md:p-7">
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-3xl border bg-white p-5"
+              style="border-color:var(--border)">
+              <div class="text-xs font-semibold"
+                style="color:var(--accent)">01</div>
+              <div class="mt-2 text-sm font-semibold">Registration opens</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">Each course
+                runs in a batch. You can enroll only when registration is
+                open.</div>
+            </div>
+            <div class="rounded-3xl border bg-white p-5"
+              style="border-color:var(--border)">
+              <div class="text-xs font-semibold"
+                style="color:var(--accent)">02</div>
+              <div class="mt-2 text-sm font-semibold">Live classes</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">You join live
+                sessions, follow a roadmap, and build a real project
+                step-by-step.</div>
+            </div>
+            <div class="rounded-3xl border bg-white p-5"
+              style="border-color:var(--border)">
+              <div class="text-xs font-semibold"
+                style="color:var(--accent)">03</div>
+              <div class="mt-2 text-sm font-semibold">Outcome + support</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">Assignments,
+                feedback, and a clean final output you can show in your
+                portfolio.</div>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-3xl p-5"
+            style="background: rgba(2,6,23,.03)">
+            <div class="text-sm font-semibold">Tip</div>
+            <div class="mt-2 text-sm" style="color:var(--muted)">If a batch is
+              closed, you can join the waitlist and get notified when it
+              opens.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Modal (YouTube) -->
+    <div id="videoModal"
+      class="fixed inset-0 z-[140] hidden items-center justify-center p-4">
+      <div class="absolute inset-0 modal-bg" onclick="closeVideo()"></div>
+      <div
+        class="relative w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow"
+        style="box-shadow:var(--shadow)">
+        <div class="flex items-center justify-between border-b px-5 py-4"
+          style="border-color:var(--border)">
+          <div>
+            <div class="text-sm font-semibold">Watch preview</div>
+            <div class="text-xs" style="color:var(--muted)">YouTube video will
+              play here. You can replace the URL anytime.</div>
+          </div>
+          <button class="rounded-xl border px-3 py-2 text-sm hover:bg-black/5"
+            style="border-color:var(--border)"
+            onclick="closeVideo()">Close</button>
+        </div>
+        <div class="bg-black">
+          <div class="relative w-full" style="padding-top:56.25%">
+            <iframe id="ytFrame" class="absolute inset-0 h-full w-full" src
+              title="YouTube video" frameborder="0"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t" style="border-color:var(--border)">
+      <div class="mx-auto max-w-6xl px-4 py-12">
+
+        <!-- Top row -->
+        <div class="grid gap-10 md:grid-cols-10 md:gap-8">
+
+          <!-- Brand (30%) -->
+          <div class="md:col-span-3 min-w-0">
+            <div class="flex items-center gap-2">
+              <span
+                class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border bg-white"
+                style="border-color:var(--border)">
+                <span class="text-sm font-semibold">BP</span>
+              </span>
+              <div class="min-w-0">
+                <div class="text-base font-semibold tracking-tight">Build With
+                  Pavel</div>
+                <div class="text-xs" style="color:var(--muted)">লাইভ ব্যাচ •
+                  বাংলা • real projects</div>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm leading-relaxed" style="color:var(--muted)">
+              Live Bangla cohort-based course platform. Admission open থাকলে
+              তবেই registration — no pre-recorded streaming vibe.
+            </p>
+
+            <!-- Social -->
+            <div class="mt-6">
+              <div class="text-xs font-semibold"
+                style="color:var(--muted)">কমিউনিটি -এর সাথে কানেক্টেড
+                থাকতে</div>
+              <div class="mt-3 flex flex-wrap gap-3">
+                <button aria-label="Facebook"
+                  onclick="toast('Facebook coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">f</button>
+                <button aria-label="Instagram"
+                  onclick="toast('Instagram coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">◎</button>
+                <button aria-label="YouTube"
+                  onclick="toast('YouTube coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">▶</button>
+                <button aria-label="LinkedIn"
+                  onclick="toast('LinkedIn coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">in</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="md:col-span-2 min-w-0">
+            <div class="text-sm font-semibold">কুইক লিংক</div>
+            <div class="mt-4 grid gap-3 text-sm" style="color:var(--muted)">
+              <button class="text-left hover:underline"
+                onclick="go('/')">হোম</button>
+              <button class="text-left hover:underline"
+                onclick="go('/batches')">আপকামিং লাইভ ব্যাচ</button>
+              <button class="text-left hover:underline"
+                onclick="go('/workshops')">লাইভ ওয়ার্কশপ</button>
+              <button class="text-left hover:underline"
+                onclick="go('/blog')">ব্লগ</button>
+              <button class="text-left hover:underline"
+                onclick="go('/contact')">যোগাযোগ</button>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="md:col-span-2 min-w-0">
+            <div class="text-sm font-semibold">যোগাযোগ</div>
+            <div class="mt-4 grid gap-4 text-sm" style="color:var(--muted)">
+              <div class="flex items-start gap-3 min-w-0">
+                <span
+                  class="grid h-10 w-10 place-items-center rounded-2xl border bg-white shrink-0"
+                  style="border-color:var(--border)">✉</span>
+                <div class="min-w-0">
+                  <div class="text-xs" style="color:var(--muted)">Email</div>
+                  <div class="font-semibold break-all"
+                    style="color:var(--text)">support@buildwithpavel.com</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 min-w-0">
+                <span
+                  class="grid h-10 w-10 place-items-center rounded-2xl border bg-white shrink-0"
+                  style="border-color:var(--border)">⌁</span>
+                <div class="min-w-0">
+                  <div class="text-xs" style="color:var(--muted)">Location</div>
+                  <div class="font-semibold" style="color:var(--text)">Dhaka,
+                    Bangladesh (Online)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company -->
+          <div class="md:col-span-3 min-w-0">
+            <div class="text-sm font-semibold">কোম্পানি</div>
+            <div class="mt-4 grid gap-3 text-sm" style="color:var(--muted)">
+              <button class="text-left hover:underline"
+                onclick="go('/about')">আমাদের সম্পর্কে</button>
+              <button class="text-left hover:underline"
+                onclick="go('/refund')">রিফান্ড পলিসি</button>
+              <button class="text-left hover:underline"
+                onclick="go('/privacy')">প্রাইভেসি পলিসি</button>
+              <button class="text-left hover:underline"
+                onclick="go('/terms')">টার্মস এবং শর্তাবলী</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom row -->
+        <div
+          class="mt-10 flex flex-col gap-2 border-t pt-6 md:flex-row md:items-center md:justify-between"
+          style="border-color:var(--border)">
+          <div class="text-xs" style="color:var(--muted)">© <span
+              id="year"></span> Build With Pavel. All rights reserved.</div>
+          <div class="text-xs" style="color:var(--muted)">Made with ❤️ for
+            Bangla learners</div>
+        </div>
+
+      </div>
+    </footer>
+
+<script>window.__BWP_ROUTE = '/faqs';</script>
+<script src="../assets/js/app.js" defer></script>
+
+</body>
+</html>
