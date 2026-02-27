@@ -1,0 +1,2532 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Build With Pavel — Premium Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    :root{
+      --bg:#ffffff;
+      --text:#0b1220;
+      --muted:#5b6475;
+      --border:rgba(15,23,42,.12);
+      --accent:#2563eb;
+      --accent2:#7c3aed;
+      --accentSoft: rgba(37,99,235,.12);
+      --shadow: 0 16px 60px rgba(2,6,23,.08);
+    }
+    body{background:var(--bg); color:var(--text);} 
+
+    /* Subtle grain */
+    .grain:before{
+      content:"";
+      position:absolute; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+      mix-blend-mode: multiply;
+      opacity:.35;
+      pointer-events:none;
+    }
+
+    /* Nice focus rings */
+    a, button, input { outline: none; }
+    a:focus-visible, button:focus-visible, input:focus-visible {
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, .18);
+      border-radius: 14px;
+    }
+
+    /* Micro motion */
+    .lift { transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+    .lift:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+
+    /* Simple reveal */
+    .reveal { opacity: 0; transform: translateY(10px); transition: all .45s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    /* Modal */
+    .modal-bg{ background: rgba(2,6,23,.62); }
+
+    /* ---------- Home section differentiation (scan + conversion) ---------- */
+    .home-sec{ position: relative; z-index: 0; }
+    .home-sec::before{
+      content:"";
+      position:absolute;
+      left:50%; transform:translateX(-50%);
+      top:-44px; bottom:-44px;
+      width:100vw;
+      border-radius: 0px;
+      background: var(--bandBg, transparent);
+      z-index:-1;
+      background: var(--bandBg, transparent);
+      z-index:-1;
+    }
+    .tone-a{ --bandBg: transparent; }
+    .tone-b{ --bandBg: rgba(37,99,235,.04); }
+    .tone-c{ --bandBg: rgba(124,58,237,.035); }
+    .tone-d{ --bandBg: rgba(2,6,23,.03); }
+
+    .sec-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; }
+    .sec-kicker{ font-size: 12px; font-weight: 700; letter-spacing: .02em; color: var(--accent); }
+    .sec-title{ font-size: 28px; font-weight: 700; letter-spacing: -.02em; }
+    .sec-sub{ margin-top: 10px; font-size: 14px; color: var(--muted); }
+
+    .soft-divider{ height:1px; background: rgba(15,23,42,.10); width:100%; }
+    }
+
+    .pill{ border:1px solid var(--border); border-radius: 999px; padding: 8px 12px; font-size: 12px; color: var(--muted); background: rgba(255,255,255,.85); }
+    .pill:hover{ background: rgba(2,6,23,.04); }
+
+    .anchor{ scroll-margin-top: 110px; }
+  </style>
+  </head>
+  <body>
+
+    <!-- Top Nav -->
+    <header class="sticky top-0 z-50 border-b bg-white/80 backdrop-blur"
+      style="border-color:var(--border)">
+      <div
+        class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+        <button onclick="go('/')" class="flex items-center gap-2 text-left">
+          <span
+            class="inline-flex h-9 w-9 items-center justify-center rounded-xl border bg-white"
+            style="border-color:var(--border)">
+            <span class="text-sm font-semibold">BP</span>
+          </span>
+          <span>
+            <div class="text-base font-semibold tracking-tight">Build With
+              Pavel</div>
+            <div class="text-[11px]" style="color:var(--muted)">Bangla courses •
+              Real projects</div>
+          </span>
+        </button>
+
+        <nav class="hidden items-center gap-6 md:flex">
+          <button onclick="go('/')" class="text-sm hover:underline"
+            style="color:var(--muted)">Home</button>
+          <button onclick="go('/courses')" class="text-sm hover:underline"
+            style="color:var(--muted)">Courses</button>
+          <button onclick="go('/about')" class="text-sm hover:underline"
+            style="color:var(--muted)">আমাদের সম্পর্কে</button>
+          <button onclick="go('/faqs')" class="text-sm hover:underline"
+            style="color:var(--muted)">FAQs</button>
+          <button onclick="go('/contact')" class="text-sm hover:underline"
+            style="color:var(--muted)">Contact</button>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <button onclick="toast('Sign in coming soon')"
+            class="hidden rounded-xl border px-4 py-2 text-sm hover:bg-black/5 md:inline-flex"
+            style="border-color:var(--border)">Sign in</button>
+          <button onclick="go('/courses')"
+            class="rounded-xl px-4 py-2 text-sm font-medium text-white hover:opacity-95"
+            style="background:var(--accent)">Get Started</button>
+          <button onclick="toggleMenu()"
+            class="inline-flex h-10 w-10 items-center justify-center rounded-xl border md:hidden"
+            style="border-color:var(--border)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              xmlns="http://www.w3.org/2000/svg"><path d="M4 7H20"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" /><path d="M4 12H20"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" /><path d="M4 17H20"
+                stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="hidden border-t bg-white"
+        style="border-color:var(--border)">
+        <div class="mx-auto max-w-6xl px-4 py-4 grid gap-2">
+          <button onclick="go('/'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">Home</button>
+          <button onclick="go('/courses'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">Courses</button>
+          <button onclick="go('/about'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">আমাদের সম্পর্কে</button>
+          <button onclick="go('/faqs'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">FAQs</button>
+          <button onclick="go('/contact'); toggleMenu()"
+            class="rounded-xl border px-4 py-3 text-left text-sm hover:bg-black/5"
+            style="border-color:var(--border)">Contact</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Toast -->
+    <div id="toast"
+      class="fixed bottom-5 left-1/2 z-[100] hidden -translate-x-1/2 rounded-2xl border bg-white px-4 py-3 text-sm shadow"
+      style="border-color:var(--border)"></div>
+
+    <!-- App Root -->
+    <main id="app" class="mx-auto max-w-6xl px-4"></main>
+
+    <!-- Info Modal (Live batches) -->
+    <div id="modal"
+      class="fixed inset-0 z-[120] hidden items-center justify-center p-4">
+      <div class="absolute inset-0 modal-bg" onclick="closeModal()"></div>
+      <div
+        class="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow"
+        style="box-shadow:var(--shadow)">
+        <div class="flex items-center justify-between border-b px-5 py-4"
+          style="border-color:var(--border)">
+          <div>
+            <div class="text-sm font-semibold">How Live Courses Work</div>
+            <div class="text-xs" style="color:var(--muted)">Build With Pavel
+              sells <b>live batches</b> — not pre-recorded video
+              streaming.</div>
+          </div>
+          <button class="rounded-xl border px-3 py-2 text-sm hover:bg-black/5"
+            style="border-color:var(--border)"
+            onclick="closeModal()">Close</button>
+        </div>
+        <div class="p-6 md:p-7">
+          <div class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-3xl border bg-white p-5"
+              style="border-color:var(--border)">
+              <div class="text-xs font-semibold"
+                style="color:var(--accent)">01</div>
+              <div class="mt-2 text-sm font-semibold">Registration opens</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">Each course
+                runs in a batch. You can enroll only when registration is
+                open.</div>
+            </div>
+            <div class="rounded-3xl border bg-white p-5"
+              style="border-color:var(--border)">
+              <div class="text-xs font-semibold"
+                style="color:var(--accent)">02</div>
+              <div class="mt-2 text-sm font-semibold">Live classes</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">You join live
+                sessions, follow a roadmap, and build a real project
+                step-by-step.</div>
+            </div>
+            <div class="rounded-3xl border bg-white p-5"
+              style="border-color:var(--border)">
+              <div class="text-xs font-semibold"
+                style="color:var(--accent)">03</div>
+              <div class="mt-2 text-sm font-semibold">Outcome + support</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">Assignments,
+                feedback, and a clean final output you can show in your
+                portfolio.</div>
+            </div>
+          </div>
+
+          <div class="mt-5 rounded-3xl p-5"
+            style="background: rgba(2,6,23,.03)">
+            <div class="text-sm font-semibold">Tip</div>
+            <div class="mt-2 text-sm" style="color:var(--muted)">If a batch is
+              closed, you can join the waitlist and get notified when it
+              opens.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Modal (YouTube) -->
+    <div id="videoModal"
+      class="fixed inset-0 z-[140] hidden items-center justify-center p-4">
+      <div class="absolute inset-0 modal-bg" onclick="closeVideo()"></div>
+      <div
+        class="relative w-full max-w-5xl overflow-hidden rounded-3xl bg-white shadow"
+        style="box-shadow:var(--shadow)">
+        <div class="flex items-center justify-between border-b px-5 py-4"
+          style="border-color:var(--border)">
+          <div>
+            <div class="text-sm font-semibold">Watch preview</div>
+            <div class="text-xs" style="color:var(--muted)">YouTube video will
+              play here. You can replace the URL anytime.</div>
+          </div>
+          <button class="rounded-xl border px-3 py-2 text-sm hover:bg-black/5"
+            style="border-color:var(--border)"
+            onclick="closeVideo()">Close</button>
+        </div>
+        <div class="bg-black">
+          <div class="relative w-full" style="padding-top:56.25%">
+            <iframe id="ytFrame" class="absolute inset-0 h-full w-full" src
+              title="YouTube video" frameborder="0"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t" style="border-color:var(--border)">
+      <div class="mx-auto max-w-6xl px-4 py-12">
+
+        <!-- Top row -->
+        <div class="grid gap-10 md:grid-cols-10 md:gap-8">
+
+          <!-- Brand (30%) -->
+          <div class="md:col-span-3 min-w-0">
+            <div class="flex items-center gap-2">
+              <span
+                class="inline-flex h-11 w-11 items-center justify-center rounded-2xl border bg-white"
+                style="border-color:var(--border)">
+                <span class="text-sm font-semibold">BP</span>
+              </span>
+              <div class="min-w-0">
+                <div class="text-base font-semibold tracking-tight">Build With
+                  Pavel</div>
+                <div class="text-xs" style="color:var(--muted)">লাইভ ব্যাচ •
+                  বাংলা • real projects</div>
+              </div>
+            </div>
+
+            <p class="mt-4 text-sm leading-relaxed" style="color:var(--muted)">
+              Live Bangla cohort-based course platform. Admission open থাকলে
+              তবেই registration — no pre-recorded streaming vibe.
+            </p>
+
+            <!-- Social -->
+            <div class="mt-6">
+              <div class="text-xs font-semibold"
+                style="color:var(--muted)">কমিউনিটি -এর সাথে কানেক্টেড
+                থাকতে</div>
+              <div class="mt-3 flex flex-wrap gap-3">
+                <button aria-label="Facebook"
+                  onclick="toast('Facebook coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">f</button>
+                <button aria-label="Instagram"
+                  onclick="toast('Instagram coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">◎</button>
+                <button aria-label="YouTube"
+                  onclick="toast('YouTube coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">▶</button>
+                <button aria-label="LinkedIn"
+                  onclick="toast('LinkedIn coming soon')"
+                  class="lift grid h-11 w-11 place-items-center rounded-2xl border bg-white text-sm font-semibold"
+                  style="border-color:var(--border)">in</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Links -->
+          <div class="md:col-span-2 min-w-0">
+            <div class="text-sm font-semibold">কুইক লিংক</div>
+            <div class="mt-4 grid gap-3 text-sm" style="color:var(--muted)">
+              <button class="text-left hover:underline"
+                onclick="go('/')">হোম</button>
+              <button class="text-left hover:underline"
+                onclick="go('/batches')">আপকামিং লাইভ ব্যাচ</button>
+              <button class="text-left hover:underline"
+                onclick="go('/workshops')">লাইভ ওয়ার্কশপ</button>
+              <button class="text-left hover:underline"
+                onclick="go('/blog')">ব্লগ</button>
+              <button class="text-left hover:underline"
+                onclick="go('/contact')">যোগাযোগ</button>
+            </div>
+          </div>
+
+          <!-- Contact -->
+          <div class="md:col-span-2 min-w-0">
+            <div class="text-sm font-semibold">যোগাযোগ</div>
+            <div class="mt-4 grid gap-4 text-sm" style="color:var(--muted)">
+              <div class="flex items-start gap-3 min-w-0">
+                <span
+                  class="grid h-10 w-10 place-items-center rounded-2xl border bg-white shrink-0"
+                  style="border-color:var(--border)">✉</span>
+                <div class="min-w-0">
+                  <div class="text-xs" style="color:var(--muted)">Email</div>
+                  <div class="font-semibold break-all"
+                    style="color:var(--text)">support@buildwithpavel.com</div>
+                </div>
+              </div>
+              <div class="flex items-start gap-3 min-w-0">
+                <span
+                  class="grid h-10 w-10 place-items-center rounded-2xl border bg-white shrink-0"
+                  style="border-color:var(--border)">⌁</span>
+                <div class="min-w-0">
+                  <div class="text-xs" style="color:var(--muted)">Location</div>
+                  <div class="font-semibold" style="color:var(--text)">Dhaka,
+                    Bangladesh (Online)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Company -->
+          <div class="md:col-span-3 min-w-0">
+            <div class="text-sm font-semibold">কোম্পানি</div>
+            <div class="mt-4 grid gap-3 text-sm" style="color:var(--muted)">
+              <button class="text-left hover:underline"
+                onclick="go('/about')">আমাদের সম্পর্কে</button>
+              <button class="text-left hover:underline"
+                onclick="go('/refund')">রিফান্ড পলিসি</button>
+              <button class="text-left hover:underline"
+                onclick="go('/privacy')">প্রাইভেসি পলিসি</button>
+              <button class="text-left hover:underline"
+                onclick="go('/terms')">টার্মস এবং শর্তাবলী</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom row -->
+        <div
+          class="mt-10 flex flex-col gap-2 border-t pt-6 md:flex-row md:items-center md:justify-between"
+          style="border-color:var(--border)">
+          <div class="text-xs" style="color:var(--muted)">© <span
+              id="year"></span> Build With Pavel. All rights reserved.</div>
+          <div class="text-xs" style="color:var(--muted)">Made with ❤️ for
+            Bangla learners</div>
+        </div>
+
+      </div>
+    </footer>
+
+    <script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  const courses = [
+    {
+      slug: "uiux-foundations-bangla",
+      category: "Web Designing",
+      title: "UI/UX Foundations (Bangla)",
+      subtitle: "Cohort-style live classes to build clean UI systems from scratch.",
+      instructor: "Pavel",
+      level: "Beginner",
+      modules: 5,
+      duration: "6 weeks (Live)",
+      students: 420,
+      price: "৳ 1990",
+      tag: "Live batch",
+      batchStart: "Mar 15, 2026",
+      seatsLeft: 18,
+      enrollmentOpen: true,
+    },
+    {
+      slug: "frontend-starter-bangla",
+      category: "Web Development",
+      title: "Frontend Starter (Bangla)",
+      subtitle: "Live cohort focused on responsive layout + real landing page project.",
+      instructor: "Pavel",
+      level: "Beginner",
+      modules: 6,
+      duration: "6 weeks (Live)",
+      students: 610,
+      price: "৳ 2490",
+      tag: "Live batch",
+      batchStart: "Apr 05, 2026",
+      seatsLeft: 0,
+      enrollmentOpen: false,
+    },
+    {
+      slug: "motion-design-with-gsap",
+      category: "Motion",
+      title: "Motion Design with GSAP",
+      subtitle: "Live classes to add premium motion + scroll storytelling to your UI.",
+      instructor: "Pavel",
+      level: "Intermediate",
+      modules: 7,
+      duration: "5 weeks (Live)",
+      students: 360,
+      price: "৳ 2990",
+      tag: "Live batch",
+      batchStart: "Apr 22, 2026",
+      seatsLeft: 9,
+      enrollmentOpen: true,
+    },
+
+    // extra open batches (for carousel demo)
+    {
+      slug: "portfolio-bootcamp-bangla",
+      category: "Web Designing",
+      title: "Portfolio Bootcamp (Bangla)",
+      subtitle: "Portfolio structure + case study writing + presentation polish.",
+      instructor: "Pavel",
+      level: "Beginner",
+      modules: 4,
+      duration: "3 weeks (Live)",
+      students: 240,
+      price: "৳ 1490",
+      tag: "Live batch",
+      batchStart: "Mar 28, 2026",
+      seatsLeft: 22,
+      enrollmentOpen: true,
+    },
+    {
+      slug: "tailwind-ui-build-bangla",
+      category: "Web Development",
+      title: "Tailwind UI Build (Bangla)",
+      subtitle: "Build a modern landing + component system with Tailwind.",
+      instructor: "Pavel",
+      level: "Beginner",
+      modules: 5,
+      duration: "4 weeks (Live)",
+      students: 180,
+      price: "৳ 1890",
+      tag: "Live batch",
+      batchStart: "Apr 12, 2026",
+      seatsLeft: 14,
+      enrollmentOpen: true,
+    },
+    {
+      slug: "gsap-scrolltrigger-lab",
+      category: "Motion",
+      title: "GSAP ScrollTrigger Lab",
+      subtitle: "Scroll-based animations + micro interactions with real demo builds.",
+      instructor: "Pavel",
+      level: "Intermediate",
+      modules: 5,
+      duration: "4 weeks (Live)",
+      students: 210,
+      price: "৳ 2190",
+      tag: "Live batch",
+      batchStart: "Apr 30, 2026",
+      seatsLeft: 11,
+      enrollmentOpen: true,
+    },
+  ];
+
+  const testimonials = [
+    {
+      quote: "ভিডিও দেখে শুধু বুঝিনি— সত্যিই একটা প্রোজেক্ট বানাতে পেরেছি। UI structure আগের থেকে অনেক পরিষ্কার।",
+      name: "Nafisa Rahman",
+      meta: "UI Designer (Student)",
+    },
+    {
+      quote: "Bangla তে এত পরিষ্কার করে motion বুঝায়— এটা rare. Scroll reveal + micro interaction এখন confident।",
+      name: "Mahmud Hasan",
+      meta: "Frontend Developer",
+    },
+    {
+      quote: "Course গুলো noisy না— straight-to-the-point. Portfolio-friendly output পেয়েছি।",
+      name: "Sadia Islam",
+      meta: "Freelancer",
+    },
+  ];
+
+  function toggleMenu(){
+    const el = document.getElementById('mobileMenu');
+    el.classList.toggle('hidden');
+  }
+
+  function toast(message){
+    const el = document.getElementById('toast');
+    el.textContent = message;
+    el.classList.remove('hidden');
+    clearTimeout(window.__toastT);
+    window.__toastT = setTimeout(()=> el.classList.add('hidden'), 1800);
+  }
+
+  function openModal(){
+    const m = document.getElementById('modal');
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+  }
+  function closeModal(){
+    const m = document.getElementById('modal');
+    m.classList.add('hidden');
+    m.classList.remove('flex');
+  }
+
+  // --- Video modal (YouTube)
+  function normalizeYouTube(url){
+    // Accept normal watch URL or embed URL; return embed URL
+    try{
+      if(!url) return '';
+      if(url.includes('youtube.com/embed/')) return url;
+      const u = new URL(url);
+      const id = u.searchParams.get('v');
+      if(id) return `https://www.youtube.com/embed/${id}`;
+      // youtu.be/<id>
+      if(u.hostname.includes('youtu.be')){
+        const vid = u.pathname.replace('/','');
+        if(vid) return `https://www.youtube.com/embed/${vid}`;
+      }
+      return url;
+    }catch(e){
+      return url;
+    }
+  }
+
+  function openVideo(url){
+    const m = document.getElementById('videoModal');
+    const frame = document.getElementById('ytFrame');
+
+    const raw = url || window.__BWP_YT_URL || 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+    const embed = normalizeYouTube(raw);
+    // autoplay
+    const src = embed.includes('?') ? `${embed}&autoplay=1` : `${embed}?autoplay=1`;
+
+    frame.src = src;
+    m.classList.remove('hidden');
+    m.classList.add('flex');
+  }
+
+  function closeVideo(){
+    const m = document.getElementById('videoModal');
+    const frame = document.getElementById('ytFrame');
+    frame.src = '';
+    m.classList.add('hidden');
+    m.classList.remove('flex');
+  }
+
+  function badge(text){
+    return `<span class="rounded-full border px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">${text}</span>`;
+  }
+
+  function benefitIcon(name){
+    const base = 'width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"';
+    const stroke = 'stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+
+    const icons = {
+      briefcase: `<svg ${base}><path ${stroke} d="M10 7V6a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v1"/><rect ${stroke} x="4" y="7" width="16" height="13" rx="2"/><path ${stroke} d="M4 12h16"/><path ${stroke} d="M9 12v2"/><path ${stroke} d="M15 12v2"/></svg>`,
+      id: `<svg ${base}><rect ${stroke} x="4" y="6" width="16" height="12" rx="2"/><path ${stroke} d="M8 10h8"/><path ${stroke} d="M8 14h5"/><circle cx="17" cy="14" r="1.5" fill="var(--accent)"/></svg>`,
+      support: `<svg ${base}><path ${stroke} d="M4 12a8 8 0 0 1 16 0"/><path ${stroke} d="M6 12v3a2 2 0 0 0 2 2h1"/><path ${stroke} d="M18 12v3a2 2 0 0 1-2 2h-1"/><path ${stroke} d="M9 19h6"/></svg>`,
+      badge: `<svg ${base}><path ${stroke} d="M12 2l3 5 5 1-3.5 4 1 6-5.5-3-5.5 3 1-6L4 8l5-1 3-5Z"/></svg>`,
+      brain: `<svg ${base}><path ${stroke} d="M9 4a3 3 0 0 0-3 3v1a3 3 0 0 0 0 6v1a3 3 0 0 0 3 3"/><path ${stroke} d="M15 4a3 3 0 0 1 3 3v1a3 3 0 0 1 0 6v1a3 3 0 0 1-3 3"/><path ${stroke} d="M9 7h0"/><path ${stroke} d="M15 7h0"/><path ${stroke} d="M9 12h6"/></svg>`,
+      puzzle: `<svg ${base}><path ${stroke} d="M8 3h3a1 1 0 0 1 1 1v2a2 2 0 1 0 0 4v2a1 1 0 0 1-1 1H8V3Z"/><path ${stroke} d="M8 13H5a1 1 0 0 1-1-1V9a2 2 0 1 0 0-4V3a1 1 0 0 1 1-1h3v11Z"/><path ${stroke} d="M12 13h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3"/><path ${stroke} d="M16 13h3a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-3"/></svg>`
+    };
+
+    return icons[name] || `<svg ${base}><circle cx="12" cy="12" r="8" ${stroke}/></svg>`;
+  }
+
+  function categoryCard(title, desc, count){
+    return `
+      <button onclick=\"go('/courses')\" class=\"lift text-left rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\">
+        <div class=\"flex items-start justify-between gap-3\">
+          <div>
+            <div class=\"text-sm font-semibold\">${title}</div>
+            <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">${desc}</div>
+          </div>
+          <span class=\"shrink-0 rounded-2xl px-3 py-2 text-xs font-medium\" style=\"background:rgba(124,58,237,.10); color:var(--accent2)\">${count} courses</span>
+        </div>
+      </button>
+    `;
+  }
+
+  function courseCard(c){
+    const statusPill = c.enrollmentOpen
+      ? `<span class=\"rounded-full px-3 py-1 text-xs\" style=\"background: rgba(16,185,129,.12); color: rgb(5,150,105)\">Enrollment open</span>`
+      : `<span class=\"rounded-full px-3 py-1 text-xs\" style=\"background: rgba(244,63,94,.10); color: rgb(225,29,72)\">Batch closed</span>`;
+
+    const seats = c.enrollmentOpen
+      ? badge(`${c.seatsLeft} seats left`)
+      : badge(`Waitlist available`);
+
+    return `
+      <button onclick=\"go('/courses/${c.slug}')\" class=\"lift text-left rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\">
+        <div class=\"flex items-center justify-between\">
+          <div class=\"inline-flex items-center gap-2 flex-wrap\">
+            <span class=\"rounded-full px-3 py-1 text-xs\" style=\"background:var(--accentSoft); color:var(--accent)\">${c.category}</span>
+            <span class=\"rounded-full px-3 py-1 text-xs\" style=\"background:rgba(124,58,237,.10); color:var(--accent2)\">${c.tag}</span>
+            ${statusPill}
+          </div>
+          <div class=\"text-sm font-semibold\">${c.price}</div>
+        </div>
+
+        <div class=\"mt-5\">
+          <div class=\"text-lg font-semibold\">${c.title}</div>
+          <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">${c.subtitle}</div>
+        </div>
+
+        <div class=\"mt-5 flex flex-wrap gap-2\">
+          ${badge(`${c.modules} Modules`)}
+          ${badge(c.duration)}
+          ${badge(`Starts: ${c.batchStart}`)}
+          ${seats}
+        </div>
+
+        <div class=\"mt-5 flex items-center justify-between\">
+          <div class=\"flex items-center gap-2\">
+            <div class=\"h-9 w-9 rounded-2xl border bg-white grid place-items-center\" style=\"border-color:var(--border)\">P</div>
+            <div>
+              <div class=\"text-xs\" style=\"color:var(--muted)\">Instructor</div>
+              <div class=\"text-sm font-semibold\">${c.instructor}</div>
+            </div>
+          </div>
+          <div class=\"text-sm font-medium\" style=\"color:var(--accent)\">View batch →</div>
+        </div>
+      </button>
+    `;
+  }
+
+  // Premium featured card (used in Open for admission section)
+  function courseCardFeatured(c, isOpenHighlight=false){
+    const isOpen = !!c.enrollmentOpen;
+
+    const topRibbon = isOpen
+      ? `<span class=\"rounded-full px-3 py-1 text-xs font-semibold\" style=\"background: rgba(16,185,129,.14); color: rgb(5,150,105)\">Admission Open</span>`
+      : `<span class=\"rounded-full px-3 py-1 text-xs font-semibold\" style=\"background: rgba(244,63,94,.10); color: rgb(225,29,72)\">Closed</span>`;
+
+    const seats = isOpen
+      ? `<span class=\"rounded-full border bg-white px-3 py-1 text-xs\" style=\"border-color:var(--border); color:var(--muted)\">${c.seatsLeft} seats left</span>`
+      : `<span class=\"rounded-full border bg-white px-3 py-1 text-xs\" style=\"border-color:var(--border); color:var(--muted)\">Waitlist available</span>`;
+
+    // IMPORTANT: do NOT nest <button> inside <button> (breaks layout). Outer is a clickable div.
+    const cta = isOpen
+      ? `<button onclick=\"event.stopPropagation(); toast('Registration flow coming soon (demo)')\" class=\"mt-5 w-full rounded-2xl px-5 py-3 text-sm font-semibold text-white hover:opacity-95\" style=\"background: var(--accent)\">Enroll now</button>`
+      : `<button onclick=\"event.stopPropagation(); toast('Added to waitlist! (demo)')\" class=\"mt-5 w-full rounded-2xl border px-5 py-3 text-sm font-semibold hover:bg-black/5\" style=\"border-color:var(--border)\">Join waitlist</button>`;
+
+    return `
+      <div role=\"button\" tabindex=\"0\" onclick=\"go('/courses/${c.slug}')\" onkeydown=\"if(event.key==='Enter'||event.key===' '){ event.preventDefault(); go('/courses/${c.slug}'); }\" class=\"lift cursor-pointer text-left rounded-[28px] border bg-white p-6 overflow-hidden\" style=\"border-color:${isOpen && isOpenHighlight ? 'rgba(16,185,129,.35)' : 'var(--border)'}; box-shadow:${isOpen && isOpenHighlight ? '0 18px 60px rgba(16,185,129,.10)' : 'none'}\">
+        <div class=\"relative\">
+          ${isOpen && isOpenHighlight ? `<div class=\"absolute -top-10 -right-10 h-28 w-28 rounded-full blur-3xl\" style=\"background: rgba(16,185,129,.18)\"></div>` : ``}
+
+          <div class=\"flex items-center justify-between gap-3\">
+            <div class=\"inline-flex items-center gap-2 flex-wrap\">
+              <span class=\"rounded-full px-3 py-1 text-xs\" style=\"background:var(--accentSoft); color:var(--accent)\">${c.category}</span>
+              <span class=\"rounded-full px-3 py-1 text-xs\" style=\"background:rgba(124,58,237,.10); color:var(--accent2)\">${c.tag}</span>
+              ${topRibbon}
+            </div>
+            <div class=\"text-sm font-semibold\">${c.price}</div>
+          </div>
+
+          <div class=\"mt-5\">
+            <div class=\"text-lg font-semibold\">${c.title}</div>
+            <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">${c.subtitle}</div>
+          </div>
+
+          <div class=\"mt-5 flex flex-wrap gap-2\">
+            <span class=\"rounded-full border bg-white px-3 py-1 text-xs\" style=\"border-color:var(--border); color:var(--muted)\">${c.modules} Modules</span>
+            <span class=\"rounded-full border bg-white px-3 py-1 text-xs\" style=\"border-color:var(--border); color:var(--muted)\">${c.duration}</span>
+            <span class=\"rounded-full border bg-white px-3 py-1 text-xs\" style=\"border-color:var(--border); color:var(--muted)\">Starts: ${c.batchStart}</span>
+            ${seats}
+          </div>
+
+          <div class=\"mt-5 flex items-center justify-between\">
+            <div class=\"flex items-center gap-2\">
+              <div class=\"h-9 w-9 rounded-2xl border bg-white grid place-items-center\" style=\"border-color:var(--border)\">P</div>
+              <div>
+                <div class=\"text-xs\" style=\"color:var(--muted)\">Instructor</div>
+                <div class=\"text-sm font-semibold\">${c.instructor}</div>
+              </div>
+            </div>
+            <div class=\"text-sm font-medium\" style=\"color:var(--accent)\">View batch →</div>
+          </div>
+
+          ${cta}
+
+          <div class=\"mt-3 text-xs\" style=\"color:var(--muted)\">${isOpen ? 'Admission open আছে— seats fill হওয়ার আগে confirm করো।' : 'Admission closed— waitlist এ থাকলে next opening notify হবে।'}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function stepCard(n, title, desc){
+    return `
+      <div class=\"rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\">
+        <div class=\"text-xs font-semibold\" style=\"color:var(--accent)\">Step ${n.toString().padStart(2,'0')}</div>
+        <div class=\"mt-3 text-base font-semibold\">${title}</div>
+        <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">${desc}</div>
+      </div>
+    `;
+  }
+
+  function blogCard(tag, title, seed='A'){
+    const gradients = {
+      A: 'background: radial-gradient(120px 80px at 20% 20%, rgba(37,99,235,.35), transparent 60%), radial-gradient(140px 120px at 80% 30%, rgba(124,58,237,.28), transparent 60%), linear-gradient(135deg, rgba(2,6,23,.03), rgba(2,6,23,.00));',
+      B: 'background: radial-gradient(140px 120px at 20% 20%, rgba(16,185,129,.22), transparent 60%), radial-gradient(140px 120px at 80% 30%, rgba(37,99,235,.28), transparent 60%), linear-gradient(135deg, rgba(2,6,23,.03), rgba(2,6,23,.00));',
+      C: 'background: radial-gradient(140px 120px at 20% 20%, rgba(244,63,94,.18), transparent 60%), radial-gradient(140px 120px at 80% 30%, rgba(124,58,237,.28), transparent 60%), linear-gradient(135deg, rgba(2,6,23,.03), rgba(2,6,23,.00));',
+    };
+
+    return `
+      <div class="lift rounded-3xl border bg-white overflow-hidden" style="border-color:var(--border)">
+        <!-- Thumbnail -->
+        <div class="relative h-40" style="${gradients[seed] || gradients.A}">
+          <div class="absolute inset-0 grain"></div>
+          <div class="absolute left-5 top-5 inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+            <span class="h-2 w-2 rounded-full" style="background: var(--accent)"></span>
+            ${tag}
+          </div>
+
+          <!-- generated thumbnail artwork -->
+          <div class="absolute inset-x-5 top-14">
+            <div class="rounded-2xl border bg-white/70 p-3" style="border-color:var(--border)">
+              <div class="relative overflow-hidden rounded-xl" style="background: rgba(2,6,23,.06)">
+                <svg viewBox="0 0 720 240" class="block w-full h-[72px]" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Generated blog thumbnail">
+                  <defs>
+                    <linearGradient id="bg_${seed}" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="rgba(37,99,235,.40)"/>
+                      <stop offset="1" stop-color="rgba(124,58,237,.28)"/>
+                    </linearGradient>
+                  </defs>
+                  <rect width="720" height="240" fill="url(#bg_${seed})" opacity=".7"/>
+                  <rect x="46" y="44" width="420" height="40" rx="12" fill="rgba(255,255,255,.55)"/>
+                  <rect x="46" y="98" width="280" height="24" rx="10" fill="rgba(255,255,255,.45)"/>
+                  <rect x="46" y="136" width="520" height="58" rx="16" fill="rgba(255,255,255,.40)"/>
+                  <circle cx="610" cy="70" r="60" fill="rgba(250,204,21,.30)"/>
+                </svg>
+                <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(255,255,255,.00), rgba(255,255,255,.35))"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-5 left-5 right-5">
+            <div class="rounded-2xl border bg-white/80 px-3 py-2 text-xs" style="border-color:var(--border); color:var(--muted)">3 min read • Bangla + practical</div>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <div class="text-base font-semibold">${title}</div>
+          <div class="mt-3 text-sm" style="color:var(--muted)">Short preview copy goes here — replace with your real blog content later.</div>
+          <div class="mt-5 flex items-center justify-between">
+            <button onclick="toast('Blog coming soon')" class="text-sm font-medium hover:underline" style="color:var(--accent)">Read article →</button>
+            <span class="text-xs" style="color:var(--muted)">Tips • Resources</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function studentProjectsSection(){
+    // anchored for quick jump
+
+    const projects = [
+      {tag:'UI/UX', title:'E-commerce UI Case Study', meta:'Wireframe → Design System → Prototype', seed:'A', chips:['Design system','Figma','Case study']},
+      {tag:'Frontend', title:'Responsive Landing Page Build', meta:'Grid + components + performance basics', seed:'B', chips:['HTML/CSS','Tailwind','Deploy']},
+      {tag:'Motion', title:'Scroll Storytelling Demo', meta:'ScrollTrigger + micro-interactions', seed:'C', chips:['GSAP','Scroll','Polish']},
+      {tag:'UI/UX', title:'Dashboard UI Kit', meta:'Components + spacing + typography', seed:'A', chips:['UI kit','Components','Handoff']},
+      {tag:'Frontend', title:'Portfolio Website', meta:'Sections + animations + clean layout', seed:'B', chips:['Layout','SEO basics','Hosting']},
+      {tag:'Motion', title:'Product Hero Animation', meta:'Timeline + easing + reveal systems', seed:'C', chips:['Timeline','Easing','UX motion']},
+    ];
+
+    const bg = {
+      A:'background: radial-gradient(160px 120px at 20% 20%, rgba(37,99,235,.35), transparent 60%), radial-gradient(180px 140px at 80% 30%, rgba(124,58,237,.28), transparent 60%), linear-gradient(135deg, rgba(2,6,23,.03), rgba(2,6,23,.00));',
+      B:'background: radial-gradient(180px 140px at 20% 20%, rgba(16,185,129,.22), transparent 60%), radial-gradient(180px 140px at 80% 30%, rgba(37,99,235,.28), transparent 60%), linear-gradient(135deg, rgba(2,6,23,.03), rgba(2,6,23,.00));',
+      C:'background: radial-gradient(180px 140px at 20% 20%, rgba(244,63,94,.18), transparent 60%), radial-gradient(180px 140px at 80% 30%, rgba(124,58,237,.28), transparent 60%), linear-gradient(135deg, rgba(2,6,23,.03), rgba(2,6,23,.00));'
+    };
+
+    return `
+      <section id="projects" class="mt-20 home-sec tone-d anchor">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div class="text-xs font-semibold" style="color:var(--accent)">🎨 Student Projects Showcase</div>
+            <h2 class="mt-2 text-3xl font-semibold tracking-tight">See what students actually build</h2>
+            <p class="mt-3 text-sm" style="color:var(--muted)">Video দেখিয়ে শেষ না — batch শেষে portfolio-ready output বানানোই goal.</p>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button class="lift rounded-2xl border bg-white px-4 py-2 text-sm" style="border-color:var(--border)" onclick="toast('Filter demo')">UI/UX</button>
+            <button class="lift rounded-2xl border bg-white px-4 py-2 text-sm" style="border-color:var(--border)" onclick="toast('Filter demo')">Frontend</button>
+            <button class="lift rounded-2xl border bg-white px-4 py-2 text-sm" style="border-color:var(--border)" onclick="toast('Filter demo')">Motion</button>
+          </div>
+        </div>
+
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          ${projects.map((p)=>`
+            <div class="lift rounded-3xl border bg-white overflow-hidden" style="border-color:var(--border)">
+              <!-- single thumbnail (no mobile preview card) -->
+              <div class="relative h-44" style="${bg[p.seed]}">
+                <div class="absolute inset-0 grain"></div>
+
+                <div class="absolute left-5 top-5 flex items-center gap-2">
+                  <span class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                    <span class="h-2 w-2 rounded-full" style="background: var(--accent)"></span>
+                    ${p.tag}
+                  </span>
+                  <span class="rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">Output</span>
+                </div>
+
+                <!-- Generated preview image (SVG) -->
+                <div class="absolute bottom-4 left-4 right-4">
+                  <div class="rounded-2xl border bg-white/75 p-3" style="border-color:var(--border)">
+                    <div class="relative overflow-hidden rounded-xl" style="background: rgba(2,6,23,.06)">
+                      <svg viewBox="0 0 720 240" class="block w-full h-[92px]" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Generated project thumbnail">
+                        <defs>
+                          <linearGradient id="pg_${p.seed}" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0" stop-color="rgba(37,99,235,.40)"/>
+                            <stop offset="1" stop-color="rgba(124,58,237,.30)"/>
+                          </linearGradient>
+                          <linearGradient id="pg2_${p.seed}" x1="1" y1="0" x2="0" y2="1">
+                            <stop offset="0" stop-color="rgba(250,204,21,.30)"/>
+                            <stop offset="1" stop-color="rgba(37,99,235,.18)"/>
+                          </linearGradient>
+                        </defs>
+                        <rect width="720" height="240" fill="url(#pg_${p.seed})" opacity=".35"/>
+                        <circle cx="610" cy="60" r="110" fill="url(#pg2_${p.seed})" opacity=".8"/>
+                        <rect x="40" y="38" width="420" height="48" rx="12" fill="rgba(255,255,255,.55)"/>
+                        <rect x="40" y="104" width="260" height="28" rx="10" fill="rgba(255,255,255,.45)"/>
+                        <rect x="40" y="146" width="520" height="56" rx="16" fill="rgba(255,255,255,.40)"/>
+                        <rect x="480" y="38" width="200" height="94" rx="18" fill="rgba(2,6,23,.10)"/>
+                        <rect x="500" y="58" width="160" height="10" rx="5" fill="rgba(255,255,255,.35)"/>
+                        <rect x="500" y="78" width="120" height="10" rx="5" fill="rgba(255,255,255,.30)"/>
+                      </svg>
+                      <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(255,255,255,.00), rgba(255,255,255,.35))"></div>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between">
+                      <div class="text-xs" style="color:var(--muted)">Generated preview</div>
+                      <div class="text-xs font-semibold" style="color:var(--text)">Portfolio-ready</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <div class="text-base font-semibold">${p.title}</div>
+                <div class="mt-2 text-sm" style="color:var(--muted)">${p.meta}</div>
+
+                <div class="mt-4 flex flex-wrap gap-2">
+                  ${p.chips.map(ch=>`<span class="rounded-full border px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">${ch}</span>`).join('')}
+                </div>
+
+                <div class="mt-5 flex items-center justify-between">
+                  <button onclick="toast('Project gallery coming soon')" class="text-sm font-medium hover:underline" style="color:var(--accent)">View showcase →</button>
+                  <span class="text-xs" style="color:var(--muted)">Live batch output</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="mt-7 rounded-3xl border bg-white p-6" style="border-color:var(--border)">
+          <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <div class="text-sm font-semibold">Want your project featured here?</div>
+              <div class="mt-1 text-sm" style="color:var(--muted)">Enroll in an open batch, complete tasks, and you’ll have a portfolio-ready output to showcase.</div>
+            </div>
+            <button onclick="go('/courses')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background:var(--accent)">See Open Batches</button>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function corporateCTASection(){
+    return `
+      <section class="mt-20">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0" style="background: radial-gradient(620px 300px at 10% 10%, rgba(37,99,235,.12), transparent 60%), radial-gradient(620px 300px at 90% 40%, rgba(124,58,237,.10), transparent 60%)"></div>
+
+          <div class="relative grid gap-8 md:grid-cols-[1.1fr_.9fr] md:items-start">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent)"></span>
+                Corporate / Team Training
+              </div>
+              <h2 class="mt-4 text-3xl font-semibold tracking-tight">Need training for your team?</h2>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">Design system, frontend workflow, motion polish — company/team needs অনুযায়ী custom live workshop + project-based training.</p>
+
+              <div class="mt-7 grid gap-3 sm:grid-cols-3">
+                ${[
+                  ['🎯','Goal based','Team’s real workflow'],
+                  ['🧩','Hands-on','Exercises + review'],
+                  ['📌','Outcome','Reusable system + docs'],
+                ].map(([i,t,d])=>`
+                  <div class="rounded-3xl border bg-white/80 p-5" style="border-color:var(--border)">
+                    <div class="text-xl">${i}</div>
+                    <div class="mt-2 text-sm font-semibold">${t}</div>
+                    <div class="mt-1 text-xs" style="color:var(--muted)">${d}</div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="mt-7 flex flex-wrap gap-3">
+                <button onclick="go('/contact')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">Request a proposal</button>
+                <button onclick="toast('Pricing sheet coming soon')" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">See training menu</button>
+              </div>
+            </div>
+
+            <div class="rounded-[28px] border bg-white/90 p-6 md:p-7" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">Quick inquiry (demo)</div>
+              <div class="mt-4 grid gap-3">
+                <input class="rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)" placeholder="Company / Team name" />
+                <input class="rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)" placeholder="Your email" />
+                <select class="rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)">
+                  <option>Training type</option>
+                  <option>UI/UX System</option>
+                  <option>Frontend Workflow</option>
+                  <option>Motion / GSAP</option>
+                </select>
+                <button onclick="toast('Submitted! (demo)')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">Send request</button>
+                <div class="text-xs" style="color:var(--muted)">We’ll reply within 24–48 hours (demo copy).</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function hero(){
+    return `
+      <!-- Hero (layout inspired by reference screenshot) -->
+      <section class="mt-8">
+        <div class="rounded-[32px] relative overflow-hidden rounded-none border bg-white" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0">
+            <div class="absolute -top-24 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full blur-3xl" style="background: rgba(37,99,235,.14)"></div>
+            <div class="absolute -bottom-32 -right-28 h-96 w-96 rounded-full blur-3xl" style="background: rgba(124,58,237,.12)"></div>
+            <div class="absolute -bottom-40 -left-40 h-[520px] w-[520px] rounded-full blur-3xl" style="background: rgba(250,204,21,.10)"></div>
+          </div>
+
+          <div class="relative grain px-6 py-10 md:px-12 md:py-14">
+            <!-- Top center hero copy -->
+            <div class="mx-auto max-w-3xl text-center">
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent)"></span>
+                <span class="font-semibold">One Platform.</span> Unlimited Learning.
+              </div>
+
+              <h1 class="mt-6 text-4xl font-semibold tracking-tight md:text-6xl">
+                ${`Shape Your Future`}<br/>
+                ${`with `}<span style="color:var(--accent)">${`In-Demand Skills`}</span>
+              </h1>
+
+              <p class="mx-auto mt-5 max-w-2xl text-base leading-relaxed" style="color:var(--muted)">
+                ${`Our platform offers a wide range of courses and resources designed to help you acquire new competencies and improve your employability.`}
+              </p>
+
+              <div class="mt-8 flex justify-center">
+                <button onclick="go('/courses')" class="lift inline-flex items-center gap-3 rounded-full px-6 py-3 text-sm font-semibold text-white" style="background: var(--accent)">
+                  ${`Get Started Now`}
+                  <span class="grid h-10 w-10 place-items-center rounded-full" style="background: rgba(255,255,255,.18)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 7l6 5-6 5V7Z" fill="currentColor"/></svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom grid: two cards + media -->
+            <div class="mt-12 grid gap-6 md:grid-cols-12 md:items-stretch">
+              <!-- Card 1 -->
+              <div class="md:col-span-3">
+                <div class="lift h-full rounded-[28px] border bg-white p-6" style="border-color:var(--border)">
+                  <div class="flex items-center gap-2">
+                    <div class="flex -space-x-2">
+                      ${[1,2,3].map(()=>`<div class="h-9 w-9 rounded-2xl border bg-white grid place-items-center" style="border-color:var(--border)">🙂</div>`).join('')}
+                    </div>
+                    <div class="ml-1 text-xs font-semibold" style="color:var(--muted)">${`4.9/5 rating`}</div>
+                  </div>
+                  <div class="mt-3 text-xs" style="color:var(--muted)">${`From early learners & reviewers`}</div>
+
+                  <div class="mt-5 rounded-2xl p-4" style="background: rgba(2,6,23,.03)">
+                    <div class="text-sm font-semibold">${`Explore Courses`}</div>
+                    <div class="mt-2 text-sm" style="color:var(--muted)">${`Choose a live batch when admission is open.`}</div>
+                  </div>
+
+                  <button onclick="go('/courses')" class="mt-5 w-full rounded-2xl border px-4 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">${`Explore Courses`}</button>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="md:col-span-3">
+                <div class="lift h-full rounded-[28px] border bg-white p-6" style="border-color:var(--border)">
+                  <div class="grid h-12 w-12 place-items-center rounded-2xl border bg-white" style="border-color:var(--border)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19V6a2 2 0 0 1 2-2h11a3 3 0 0 1 3 3v12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><path d="M4 19a2 2 0 0 0 2 2h14" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><path d="M8 8h7" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/><path d="M8 12h6" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/></svg>
+                  </div>
+
+                  <div class="mt-5 text-base font-semibold">${`Road to learning for a successful career`}</div>
+                  <div class="mt-3 text-sm" style="color:var(--muted)">${`Discover diverse courses on our platform.`}</div>
+
+                  <button onclick="go('/about')" class="mt-6 text-sm font-medium hover:underline" style="color:var(--accent)">${`More About Us`}</button>
+                </div>
+              </div>
+
+              <!-- Media / hero visual -->
+              <div class="md:col-span-6">
+                <div class="relative overflow-hidden rounded-3xl border" style="border-color:var(--border)">
+                  <!-- Video Thumbnail -->
+                  <div class="relative w-full overflow-hidden" style="padding-top:56.25%; background: linear-gradient(135deg,#0f172a,#1e293b);">
+
+                    <!-- YouTube thumbnail -->
+                    <img
+                      src="https://img.youtube.com/vi/Yq0QkCxoTHM/maxresdefault.jpg"
+                      alt="YouTube preview"
+                      class="absolute inset-0 h-full w-full object-cover"
+                      onerror="this.onerror=null; this.src='https://img.youtube.com/vi/Yq0QkCxoTHM/hqdefault.jpg';"
+                    />
+
+                    <!-- Overlay subtle gradient -->
+                    <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(2,6,23,.05), rgba(2,6,23,.55))"></div>
+
+                    <!-- Center Play Button -->
+                    <button onclick="openVideo()" class="absolute inset-0 flex items-center justify-center">
+                      <span class="grid h-20 w-20 place-items-center rounded-full shadow-lg" style="background:white; box-shadow:0 20px 50px rgba(0,0,0,.25)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 7l8 5-8 5V7Z" fill="#111827"/>
+                        </svg>
+                      </span>
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function homePage(){
+    return `
+      ${hero()}
+
+      <!-- Job-ready value section (restored) -->
+      <section id="jobready" class="mt-20 home-sec tone-a anchor">
+        <div class="rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="grid gap-8 md:grid-cols-[1.15fr_.85fr] md:items-center">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent)"></span>
+                Live mentorship • Real projects
+              </div>
+              <h2 class="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">Build job-ready skills in Bangla — with live mentorship & real projects</h2>
+              <p class="mt-4 text-sm leading-relaxed" style="color:var(--muted)">এটা কোনো pre-recorded ভিডিও প্ল্যাটফর্ম না। প্রতিটা কোর্স চলে <b>live batch</b> হিসেবে — admission open থাকলে enroll, তারপর live class + assignment + feedback + একটা portfolio-ready outcome.</p>
+
+              <div class="mt-6 flex flex-wrap gap-3">
+                <button onclick="go('/batches')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">See Open Batches</button>
+                <button onclick="openModal()" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">How it works</button>
+              </div>
+
+              <div class="mt-7 grid gap-3 sm:grid-cols-3">
+                <div class="rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="text-sm font-semibold">Live classes</div>
+                  <div class="mt-1 text-xs" style="color:var(--muted)">Fixed roadmap + weekly structure</div>
+                </div>
+                <div class="rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="text-sm font-semibold">Assignments</div>
+                  <div class="mt-1 text-xs" style="color:var(--muted)">Practice with real tasks</div>
+                </div>
+                <div class="rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="text-sm font-semibold">Feedback</div>
+                  <div class="mt-1 text-xs" style="color:var(--muted)">Review + polish for outcomes</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-[28px] border bg-white p-6 md:p-7" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">What you’ll get</div>
+              <div class="mt-4 grid gap-3">
+                <div class="flex items-start gap-3 rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="grid h-10 w-10 place-items-center rounded-2xl" style="background: rgba(37,99,235,.10)">✅</div>
+                  <div>
+                    <div class="text-sm font-semibold">Portfolio-ready project</div>
+                    <div class="mt-1 text-sm" style="color:var(--muted)">Batch শেষে show করার মতো output.</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="grid h-10 w-10 place-items-center rounded-2xl" style="background: rgba(124,58,237,.10)">🗺️</div>
+                  <div>
+                    <div class="text-sm font-semibold">Clear roadmap</div>
+                    <div class="mt-1 text-sm" style="color:var(--muted)">Confusion কম, progress বেশি.</div>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="grid h-10 w-10 place-items-center rounded-2xl" style="background: rgba(16,185,129,.12)">💬</div>
+                  <div>
+                    <div class="text-sm font-semibold">Mentorship + community</div>
+                    <div class="mt-1 text-sm" style="color:var(--muted)">Live Q&A + support.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+
+      <!-- Featured Courses (move up for conversion) -->
+      <section id="featured" class="mt-20 home-sec tone-b anchor">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0" style="background: radial-gradient(620px 300px at 10% 10%, rgba(124,58,237,.10), transparent 60%), radial-gradient(620px 300px at 90% 40%, rgba(37,99,235,.10), transparent 60%)"></div>
+
+          <div class="relative p-8 md:p-12">
+            <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+              <div>
+                <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                  <span class="h-2 w-2 rounded-full" style="background: var(--accent2)"></span>
+                  Featured Courses
+                </div>
+                <h2 class="mt-4 text-2xl font-semibold tracking-tight md:text-3xl">হাতে-কলমে শেখো — প্রতিটি কোর্স real project দিয়ে তৈরি।</h2>
+                <p class="mt-3 text-sm" style="color:var(--muted)">Admission open থাকলে seat secure করো — live batch, roadmap, feedback, and portfolio output.</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="go('/batches')" class="rounded-2xl border bg-white/80 px-4 py-2 text-sm hover:bg-black/5" style="border-color:var(--border)">See live batches</button>
+                <button onclick="go('/courses')" class="text-sm font-medium hover:underline" style="color:var(--accent)">View all →</button>
+              </div>
+            </div>
+
+            <!-- Open for admission (highlight) -->
+            ${(() => {
+              const open = courses.filter(c=>c.enrollmentOpen);
+              const closed = courses.filter(c=>!c.enrollmentOpen);
+
+              const openCarousel = open.length
+                ? `
+                  <div class="mt-6 relative">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 w-10" style="background: linear-gradient(90deg, rgba(255,255,255,1), rgba(255,255,255,0))"></div>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 w-10" style="background: linear-gradient(270deg, rgba(255,255,255,1), rgba(255,255,255,0))"></div>
+
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="text-xs font-semibold" style="color:var(--muted)">Swipe / scroll to see more</div>
+                      <div class="flex gap-2">
+                        <button onclick="scrollOpenCarousel(-1)" class="rounded-2xl border bg-white px-3 py-2 text-sm hover:bg-black/5" style="border-color:var(--border)">←</button>
+                        <button onclick="scrollOpenCarousel(1)" class="rounded-2xl border bg-white px-3 py-2 text-sm hover:bg-black/5" style="border-color:var(--border)">→</button>
+                      </div>
+                    </div>
+
+                    <div id="openCarousel" class="mt-4 flex gap-4 overflow-x-auto pb-2 no-scrollbar" style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch">
+                      ${open.map((c,idx)=>`<div class="min-w-[320px] max-w-[360px] w-[88%] sm:w-[360px]" style="scroll-snap-align: start">${courseCardFeatured(c, idx===0)}</div>`).join('')}
+                    </div>
+                  </div>
+                `
+                : `
+                  <div class="mt-6 rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                      <div>
+                        <div class="text-sm font-semibold">এই মুহূর্তে কোনো Admission Open batch নেই</div>
+                        <div class="mt-1 text-sm" style="color:var(--muted)">Waitlist এ থাকলে next admission open হলেই notify করা হবে।</div>
+                      </div>
+                      <button onclick="go('/batches')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">Join waitlist</button>
+                    </div>
+                  </div>
+                `;
+
+              const closedRow = `
+                <div class="mt-8">
+                  <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-center gap-2">
+                      <div class="text-xs font-semibold" style="color: var(--muted)">Other featured batches</div>
+                      <span class="rounded-full border px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">${closed.length} in queue / closed</span>
+                    </div>
+                    <button onclick="go('/courses')" class="lift inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-semibold text-white" style="background: var(--accent)">
+                      Explore all courses
+                      <span class="opacity-90">→</span>
+                    </button>
+                  </div>
+                  <div class="mt-5 grid gap-6 md:grid-cols-3">${courses.slice(0,3).map(courseCard).join('')}</div>
+                </div>
+              `;
+
+              return `
+                <div class="mt-8 rounded-[28px] border bg-white p-6 md:p-7" style="border-color:var(--border)">
+                  <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="grid h-11 w-11 place-items-center rounded-2xl" style="background: rgba(16,185,129,.12)">🟢</div>
+                      <div>
+                        <div class="text-sm font-semibold">Open for admission</div>
+                        <div class="text-xs" style="color:var(--muted)">Seat limited — open থাকলে এখনই enroll করো।</div>
+                      </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                      <span class="rounded-full border bg-white px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">${open.length} open batches</span>
+                      <span class="rounded-full border bg-white px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">Live + feedback</span>
+                      <span class="rounded-full border bg-white px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">Portfolio outcome</span>
+                    </div>
+                  </div>
+
+                  ${openCarousel}
+                </div>
+
+                ${closedRow}
+              `;
+            })()}
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Build With Pavel is best (trust before stats) -->
+      <section id="why" class="mt-20 home-sec tone-a anchor">
+        <div class="grid gap-8 md:grid-cols-2 md:items-center">
+          <div>
+            <div class="text-xs font-semibold" style="color:var(--accent)">Why Build With Pavel</div>
+            <h2 class="mt-2 text-3xl font-semibold tracking-tight">Why Build With Pavel is best</h2>
+            <p class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">This is a <b>live course</b> platform — enroll only when a batch is open. No “video streaming” vibe. You get structure, accountability, and outcomes.</p>
+
+            <div class="mt-6 grid gap-3">
+              ${[
+                ['🟢','Live cohort + fixed roadmap','Weekly plan so you actually finish.'],
+                ['🎯','Real project outcome','Portfolio-ready deliverable every batch.'],
+                ['⚡','Fast feedback loop','Assignments + review + improvements.'],
+                ['🧑‍🤝‍🧑','Community + support','You’re not alone—progress stays consistent.'],
+              ].map(([ic,t,d])=>`
+                <div class="lift rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="flex items-start gap-3">
+                    <div class="grid h-10 w-10 place-items-center rounded-2xl" style="background: rgba(37,99,235,.10)">${ic}</div>
+                    <div>
+                      <div class="text-sm font-semibold">${t}</div>
+                      <div class="mt-1 text-sm" style="color:var(--muted)">${d}</div>
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="mt-7 flex flex-wrap gap-3">
+              <button onclick="go('/courses')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">See Open Batches</button>
+              <button onclick="openModal()" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color: var(--border)">How it works</button>
+            </div>
+          </div>
+
+          <div class="relative">
+            <div class="absolute -inset-6 rounded-[36px]" style="background: radial-gradient(420px 220px at 30% 20%, rgba(37,99,235,.14), transparent 60%), radial-gradient(420px 220px at 80% 60%, rgba(124,58,237,.12), transparent 60%)"></div>
+            <div class="relative rounded-[32px] border bg-white p-7 md:p-8" style="border-color:var(--border); box-shadow:var(--shadow)">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-sm font-semibold">Batch-based learning</div>
+                  <div class="mt-2 text-sm" style="color:var(--muted)">Admission open → enroll → live sessions → final project.</div>
+                </div>
+                <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(250,204,21,.18); color: rgba(120,53,15,.95)">Live</span>
+              </div>
+
+              <div class="mt-6 grid gap-3">
+                ${[
+                  ['01','Enroll when open','Seats are limited.'],
+                  ['02','Attend live classes','Follow weekly roadmap.'],
+                  ['03','Submit assignments','Get feedback quickly.'],
+                  ['04','Ship your project','Use it in portfolio.'],
+                ].map(([n,t,d])=>`
+                  <div class="rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                    <div class="flex items-start justify-between gap-3">
+                      <div>
+                        <div class="text-sm font-semibold">${t}</div>
+                        <div class="mt-1 text-sm" style="color:var(--muted)">${d}</div>
+                      </div>
+                      <div class="text-xs font-semibold" style="color:var(--accent)">${n}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Results Section (stats after trust) -->
+      <section id="results" class="mt-20 home-sec tone-c anchor">
+        <div class="text-center max-w-2xl mx-auto">
+          <div class="text-xs font-semibold" style="color:var(--accent)">Results</div>
+          <h2 class="mt-2 text-3xl font-semibold tracking-tight">Real Impact, Real Numbers</h2>
+          <p class="mt-3 text-sm" style="color:var(--muted)">আমাদের শিক্ষার্থীরা শুধু শেখে না — career build করে।</p>
+        </div>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-4">
+          ${[
+            {num:85, suffix:'%', title:'Got Hired', desc:'কোর্স শেষ করার ৬ মাসের মধ্যে চাকরি পেয়েছে', icon:'💼'},
+            {num:3, suffix:'x', title:'Income Growth', desc:'ফ্রিল্যান্সারদের average income growth', icon:'📈'},
+            {num:92, suffix:'%', title:'Completion Rate', desc:'শিক্ষার্থীরা পুরো কোর্স শেষ করে', icon:'✅'},
+            {num:15, suffix:'+', title:'Countries', desc:'বিশ্বব্যাপী বাংলাভাষী শিক্ষার্থী', icon:'🌍'},
+          ].map(({num,suffix,title,desc,icon})=>`
+            <div class="lift relative overflow-hidden rounded-3xl border bg-white p-6" style="border-color:var(--border)">
+              <div class="absolute inset-0" style="background: radial-gradient(240px 140px at 15% 0%, rgba(37,99,235,.10), transparent 60%), radial-gradient(240px 140px at 85% 40%, rgba(124,58,237,.10), transparent 60%)"></div>
+              <div class="relative">
+                <div class="flex items-start justify-between">
+                  <div class="grid h-11 w-11 place-items-center rounded-2xl border bg-white" style="border-color:var(--border)">${icon}</div>
+                  <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(2,6,23,.04); color: var(--muted)">Outcome</span>
+                </div>
+
+                <div class="mt-5 flex items-baseline justify-center gap-1">
+                  <div class="counter text-4xl font-semibold tracking-tight" style="color:var(--accent)" data-target="${num}" data-suffix="${suffix}">0</div>
+                </div>
+                <div class="mt-2 text-sm font-semibold text-center">${title}</div>
+                <div class="mt-2 text-xs text-center" style="color:var(--muted)">${desc}</div>
+
+                <div class="mt-5 flex justify-center">
+                  <span class="rounded-full border px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">Live batch results</span>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <!-- Who Is This Course For -->
+      <section id="forwho" class="mt-20 home-sec tone-d anchor">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0" style="background: radial-gradient(520px 280px at 10% 10%, rgba(37,99,235,.10), transparent 60%), radial-gradient(520px 280px at 90% 40%, rgba(124,58,237,.10), transparent 60%)"></div>
+
+          <div class="relative">
+            <div class="text-center max-w-2xl mx-auto">
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent)"></span>
+                এই কোর্স কার জন্য?
+              </div>
+              <h2 class="mt-4 text-3xl font-semibold tracking-tight">Designed for Bangladeshi Learners with Clear Goals</h2>
+              <p class="mt-3 text-sm" style="color:var(--muted)">নিজেকে identify করতে পারলে decision নিতে সহজ হয়। কোন পথে যেতে চাও— সেটাই clear হবে।</p>
+            </div>
+
+            <div class="mt-10 grid gap-5 md:grid-cols-4">
+              ${[
+                ['🎓','Students','Skill build করে career শুরু করতে চাও','Foundation + guidance'],
+                ['💼','Job Seekers','Job-ready portfolio বানাতে চাও','Outcome-focused'],
+                ['🧑‍💻','Freelancers','Quality upgrade করে income বাড়াতে চাও','Client-ready skills'],
+                ['👨‍💼','Career Switchers','New tech skill শিখে field change করতে চাও','Structured roadmap']
+              ].map(([i,t,d,tag])=>`
+                <div class="lift rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="text-3xl">${i}</div>
+                    <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(2,6,23,.04); color: var(--muted)">${tag}</span>
+                  </div>
+                  <div class="mt-5 text-sm font-semibold">${t}</div>
+                  <div class="mt-2 text-sm" style="color:var(--muted)">${d}</div>
+                  <div class="mt-5 h-px" style="background: rgba(15,23,42,.10)"></div>
+                  <div class="mt-4 text-xs" style="color:var(--muted)">Perfect if you want consistency + accountability.</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Batch Timeline -->
+      <section id="timeline" class="mt-20 home-sec tone-b anchor">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0" style="background: radial-gradient(520px 280px at 10% 10%, rgba(124,58,237,.10), transparent 60%), radial-gradient(520px 280px at 90% 40%, rgba(37,99,235,.10), transparent 60%)"></div>
+
+          <div class="relative">
+            <div class="text-center max-w-2xl mx-auto">
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent2)"></span>
+                🗓 How a Batch Works
+              </div>
+              <h2 class="mt-4 text-3xl font-semibold tracking-tight">A Simple Roadmap — so you don’t feel lost</h2>
+              <p class="mt-3 text-sm" style="color:var(--muted)">Bangladesh market-এ confusion অনেক— তাই batch structure একদম clear রাখা হয়েছে।</p>
+            </div>
+
+            <div class="mt-10">
+              <div class="hidden md:block h-px" style="background: rgba(15,23,42,.12)"></div>
+              <div class="mt-0 grid gap-4 md:grid-cols-5">
+                ${[
+                  ['01','Week 1','Foundation','Core concepts + setup'],
+                  ['02','Week 2','Practice','Hands-on exercises'],
+                  ['03','Week 3','Project Build','Real project start'],
+                  ['04','Week 4','Feedback','Review + improvements'],
+                  ['05','Week 5','Final Submission','Portfolio-ready output'],
+                ].map(([n,w,t,d])=>`
+                  <div class="relative rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                    <div class="flex items-center justify-between">
+                      <div class="text-xs font-semibold" style="color:var(--muted)">${w}</div>
+                      <div class="grid h-9 w-9 place-items-center rounded-2xl" style="background: rgba(37,99,235,.10); color: var(--accent)">${n}</div>
+                    </div>
+                    <div class="mt-4 text-sm font-semibold">${t}</div>
+                    <div class="mt-2 text-sm" style="color:var(--muted)">${d}</div>
+                    <div class="mt-5 inline-flex items-center gap-2 text-xs" style="color:var(--muted)">
+                      <span>✅</span><span>Live session + tasks</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="mt-8 rounded-3xl border bg-white/80 p-5" style="border-color:var(--border)">
+                <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <div>
+                    <div class="text-sm font-semibold">Outcome by the end</div>
+                    <div class="mt-1 text-sm" style="color:var(--muted)">You’ll ship a project you can show in your portfolio + get feedback for polish.</div>
+                  </div>
+                  <button onclick="openModal()" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">See full flow</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Refund Guarantee (kept, redesigned — content moved to payment card) -->
+      <section id="trust" class="mt-20 home-sec tone-a anchor">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0" style="background: radial-gradient(520px 260px at 10% 10%, rgba(16,185,129,.10), transparent 60%), radial-gradient(520px 260px at 90% 40%, rgba(37,99,235,.10), transparent 60%)"></div>
+
+          <div class="relative grid gap-8 md:grid-cols-3 md:items-start">
+            <div class="md:col-span-1">
+              <div class="text-xs font-semibold" style="color:rgb(5,150,105)">Risk-free enrollment</div>
+              <h2 class="mt-3 text-2xl font-semibold">Policies that reduce fear</h2>
+              <p class="mt-3 text-sm" style="color:var(--muted)">Bangladeshi learners usually worry about “এটা আমার জন্য হবে তো?” তাই আমরা policies clear রাখি।</p>
+            </div>
+
+            <div class="md:col-span-2 grid gap-4 md:grid-cols-2">
+              <div class="lift rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                <div class="flex items-start gap-3">
+                  <div class="grid h-11 w-11 place-items-center rounded-2xl" style="background: rgba(16,185,129,.12)">✅</div>
+                  <div>
+                    <div class="text-sm font-semibold">Clear refund policy</div>
+                    <div class="mt-2 text-sm" style="color:var(--muted)">Refund details are transparent and easy to understand before enrollment.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lift rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                <div class="flex items-start gap-3">
+                  <div class="grid h-11 w-11 place-items-center rounded-2xl" style="background: rgba(37,99,235,.12)">💬</div>
+                  <div>
+                    <div class="text-sm font-semibold">Support-first mindset</div>
+                    <div class="mt-2 text-sm" style="color:var(--muted)">You get guidance to stay on track — not just content dumps.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lift rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                <div class="flex items-start gap-3">
+                  <div class="grid h-11 w-11 place-items-center rounded-2xl" style="background: rgba(124,58,237,.12)">🧭</div>
+                  <div>
+                    <div class="text-sm font-semibold">Course guidance</div>
+                    <div class="mt-2 text-sm" style="color:var(--muted)">Not sure which course? We help you choose based on your goal.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lift rounded-3xl border bg-white/85 p-6" style="border-color:var(--border)">
+                <div class="flex items-start gap-3">
+                  <div class="grid h-11 w-11 place-items-center rounded-2xl" style="background: rgba(250,204,21,.22)">🔒</div>
+                  <div>
+                    <div class="text-sm font-semibold">Secure registration</div>
+                    <div class="mt-2 text-sm" style="color:var(--muted)">Your payment + enrollment status are confirmed instantly (when integrated).</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Instructor Authority Section -->
+      ${(() => {
+        // keep your existing instructor authority block (already premium)
+        // we inject by reusing the current HTML in-place via string slicing would be complex;
+        // so we reference it by calling aboutPage-like content? Not available.
+        // Instead we keep it already present on the page by leaving the existing section below in the document.
+        return '';
+      })()}
+
+      <!-- Live Course Benefits -->
+      <section id="benefits" class="mt-20 home-sec tone-c anchor">
+        <div class="text-center max-w-2xl mx-auto">
+          <div class="text-xs font-semibold" style="color:var(--accent)">Live Course Benefits</div>
+          <h2 class="mt-2 text-3xl font-semibold tracking-tight">কি কি পাচ্ছেন লাইভ কোর্স</h2>
+          <p class="mt-3 text-sm" style="color:var(--muted)">Live batch-এর সাথে পাবেন support, review, এবং career-ready direction.</p>
+        </div>
+
+        <div class="mt-10 rounded-[32px] border bg-white overflow-hidden" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="grid md:grid-cols-3">
+            ${[
+              ['briefcase','জবের জন্য ডেডিকেটেড জব প্লেসমেন্ট টিম'],
+              ['id','সিভি বিল্ডার ও এক্সপার্ট সিভি রিভিউ'],
+              ['support','১৮ ঘণ্টা লাইভ সাপোর্ট নির্দিষ্ট কোর্স'],
+              ['badge','প্রো ব্যাচে স্পেশাল সিভি ও জব সাপোর্ট'],
+              ['brain','লাইভ টেস্টে নিজেকে যাচাইয়ের সুযোগ'],
+              ['puzzle','দিনে ৩ টি পর্যন্ত সাপোর্ট ক্লাস নির্দিষ্ট কোর্স'],
+            ].map((it,idx)=>{
+              const rightBorder = (idx % 3) !== 2 ? 'md:border-r' : '';
+              const bottomBorder = idx < 3 ? 'border-b md:border-b' : '';
+              return `
+                <div class="p-7 md:p-9 text-center ${bottomBorder} ${rightBorder}" style="border-color: rgba(15,23,42,.10)">
+                  <div class="mx-auto grid h-14 w-14 place-items-center rounded-2xl border bg-white" style="border-color:var(--border); background: rgba(37,99,235,.06)">
+                    ${benefitIcon(it[0])}
+                  </div>
+                  <div class="mt-5 text-base font-semibold leading-snug">${it[1]}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </section>
+
+      <!-- Student Projects Showcase -->
+      ${studentProjectsSection()}
+
+      <!-- What Our Students Say -->
+      <section id="testimonials" class="mt-20 home-sec tone-b anchor">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="absolute inset-0" style="background: radial-gradient(520px 280px at 10% 10%, rgba(37,99,235,.10), transparent 60%), radial-gradient(520px 280px at 90% 40%, rgba(124,58,237,.10), transparent 60%)"></div>
+
+          <div class="relative grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-center">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent2)"></span>
+                Testimonials
+              </div>
+              <h2 class="mt-4 text-3xl font-semibold tracking-tight">What Our Students Say</h2>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">Live batch learning + real assignments — that’s why students finish with confidence.</p>
+
+              <div class="mt-7 grid gap-3 sm:grid-cols-3">
+                ${[
+                  ['4.9/5','Rating','Average student rating'],
+                  ['92%','Completion','Students complete batches'],
+                  ['Live','Format','Cohort-style classes'],
+                ].map(([a,b,c])=>`
+                  <div class="rounded-3xl border bg-white/80 p-5" style="border-color:var(--border)">
+                    <div class="text-lg font-semibold" style="color:var(--accent)">${a}</div>
+                    <div class="mt-1 text-xs font-semibold">${b}</div>
+                    <div class="mt-1 text-xs" style="color:var(--muted)">${c}</div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="mt-7 flex gap-3">
+                <button class="rounded-2xl border px-4 py-2 text-sm hover:bg-black/5" style="border-color:var(--border)" onclick="prevTestimonial()">← Prev</button>
+                <button class="rounded-2xl border px-4 py-2 text-sm hover:bg-black/5" style="border-color:var(--border)" onclick="nextTestimonial()">Next →</button>
+              </div>
+
+              <div class="mt-5 flex items-center gap-2">
+                ${[0,1,2].map(i=>`<button aria-label="dot" onclick="setTestimonial(${i})" class="h-2.5 w-2.5 rounded-full" style="background:${i===0?'var(--accent)':'rgba(15,23,42,.18)'}" id="dot_${i}"></button>`).join('')}
+              </div>
+            </div>
+
+            <div class="rounded-[28px] border bg-white p-7 md:p-8" style="border-color:var(--border)">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="h-12 w-12 rounded-2xl border bg-white grid place-items-center" style="border-color:var(--border)">★</div>
+                  <div>
+                    <div id="t_name" class="text-sm font-semibold"></div>
+                    <div id="t_meta" class="text-xs" style="color:var(--muted)"></div>
+                  </div>
+                </div>
+                <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(16,185,129,.12); color: rgb(5,150,105)">Verified</span>
+              </div>
+
+              <div class="mt-6 rounded-3xl p-6" style="background: rgba(2,6,23,.03)">
+                <div class="text-lg font-semibold leading-relaxed">“<span id="t_quote"></span>”</div>
+              </div>
+
+              <div class="mt-6 grid gap-3">
+                ${[
+                  ['✅','Assignment feedback'],
+                  ['✅','Live Q&A support'],
+                  ['✅','Portfolio-ready output'],
+                ].map(([ic,t])=>`
+                  <div class="flex items-center gap-2 text-sm" style="color:var(--muted)"><span>${ic}</span><span>${t}</span></div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Blog -->
+      <section id="bloghome" class="mt-20 home-sec tone-a anchor">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div class="text-xs font-semibold" style="color:var(--accent)">Blog</div>
+            <h2 class="mt-2 text-2xl font-semibold tracking-tight">Tips, resources & live batch updates</h2>
+            <p class="mt-2 text-sm" style="color:var(--muted)">Short reads in Bangla + practical guidance to level up your UI/Frontend/Motion journey.</p>
+          </div>
+          <button onclick="toast('Blog page coming soon')" class="text-sm font-medium hover:underline" style="color:var(--accent)">View all posts →</button>
+        </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">
+          ${blogCard('UI/UX','কিভাবে একটা clean UI system বানাবে — Bangla guide','A')}
+          ${blogCard('Frontend','Responsive layout শেখার 7টা practical rule','B')}
+          ${blogCard('Motion','GSAP basics: scroll animation শুরু করার সহজ roadmap','C')}
+        </div>
+      </section>
+
+      <!-- Corporate Training CTA -->
+      ${corporateCTASection()}
+
+      <!-- Subscribe (final CTA) -->
+      <section id="subscribe" class="mt-20 mb-10 home-sec tone-c anchor">
+        <div class="relative overflow-hidden rounded-[32px] border bg-white" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="relative grid gap-8 p-8 md:grid-cols-2 md:items-center md:p-12">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white/80 px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: var(--accent)"\></span>
+                Newsletter
+              </div>
+              <h2 class="mt-4 text-3xl font-semibold tracking-tight">Free Tips & Resources পেতে চাও?</h2>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">Weekly mini tips, checklists, and live batch admission updates — একদম short & practical.</p>
+
+              <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                ${[
+                  ['✅','Weekly tips'],
+                  ['✅','Templates'],
+                  ['✅','Admission alerts'],
+                ].map(([ic,t])=>`
+                  <div class="rounded-3xl border bg-white/80 p-4" style="border-color:var(--border)">
+                    <div class="text-sm font-semibold">${ic} ${t}</div>
+                    <div class="mt-1 text-xs" style="color:var(--muted)">No spam.</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="rounded-[28px] border bg-white/90 p-6 md:p-7" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">Get updates in your inbox</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">Be the first to know when new batches open.</div>
+
+              <div class="mt-5 flex flex-col gap-3">
+                <div class="flex gap-2">
+                  <input class="w-full rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)" placeholder="Enter your email" />
+                  <button onclick="toast('Subscribed! (demo)')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white hover:opacity-95" style="background: var(--accent)">Subscribe</button>
+                </div>
+                <div class="flex items-center justify-between text-xs" style="color:var(--muted)">
+                  <span>No spam. Unsubscribe anytime.</span>
+                  <span class="rounded-full border px-3 py-1" style="border-color:var(--border)">Launch phase</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function coursesPage(){
+    return `
+      <section class=\"mt-10\">
+        <div class=\"flex flex-col gap-3 md:flex-row md:items-end md:justify-between\">
+          <div>
+            <h1 class=\"text-3xl font-semibold tracking-tight\">Courses</h1>
+            <p class=\"mt-2 text-sm\" style=\"color:var(--muted)\">Bangla courses designed for real projects, clean UI systems and modern motion.</p>
+          </div>
+
+          <div class=\"flex flex-wrap gap-2\">
+            <button onclick=\"filterCategory('all')\" class=\"rounded-2xl border px-4 py-2 text-sm hover:bg-black/5\" style=\"border-color:var(--border)\">All</button>
+            <button onclick=\"filterCategory('Web Development')\" class=\"rounded-2xl border px-4 py-2 text-sm hover:bg-black/5\" style=\"border-color:var(--border)\">Web Dev</button>
+            <button onclick=\"filterCategory('Web Designing')\" class=\"rounded-2xl border px-4 py-2 text-sm hover:bg-black/5\" style=\"border-color:var(--border)\">UI/UX</button>
+            <button onclick=\"filterCategory('Motion')\" class=\"rounded-2xl border px-4 py-2 text-sm hover:bg-black/5\" style=\"border-color:var(--border)\">Motion</button>
+          </div>
+        </div>
+
+        <div class=\"mt-6 rounded-[28px] border bg-white p-4 md:p-5\" style=\"border-color:var(--border)\">
+          <div class=\"flex flex-col gap-3 md:flex-row md:items-center md:justify-between\">
+            <div class=\"flex items-center gap-2\">
+              <div class=\"h-10 w-10 rounded-2xl grid place-items-center\" style=\"background: rgba(37,99,235,.10); color: var(--accent)\">
+                <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 18a8 8 0 1 1 5.293-14.293A8 8 0 0 1 10 18Zm11 3-6-6 1.414-1.414 6 6Z\"/></svg>
+              </div>
+              <input id=\"search\" oninput=\"renderCoursesGrid()\" class=\"w-full rounded-2xl border px-4 py-3 text-sm md:w-[360px]\" style=\"border-color:var(--border)\" placeholder=\"Search courses (e.g., UI, CSS, motion)\" />
+            </div>
+            <div class=\"text-sm\" style=\"color:var(--muted)\"><span id=\"resultCount\"></span></div>
+          </div>
+        </div>
+
+        <div id=\"coursesGrid\" class=\"mt-6 grid gap-4 md:grid-cols-3\"></div>
+      </section>
+    `;
+  }
+
+  function courseDetail(slug){
+    const c = courses.find(x=>x.slug===slug);
+    if(!c){
+      return `
+        <section class=\"mt-10\">
+          <h1 class=\"text-2xl font-semibold\">Course not found</h1>
+          <p class=\"mt-2 text-sm\" style=\"color:var(--muted)\">The course you’re looking for doesn’t exist.</p>
+          <button onclick=\"go('/courses')\" class=\"mt-6 text-sm font-medium hover:underline\" style=\"color:var(--accent)\">Back to courses →</button>
+        </section>
+      `;
+    }
+
+    const statusPill = c.enrollmentOpen
+      ? `<span class=\"rounded-full px-3 py-1 text-xs\" style=\"background: rgba(16,185,129,.12); color: rgb(5,150,105)\">Admission Open</span>`
+      : `<span class=\"rounded-full px-3 py-1 text-xs\" style=\"background: rgba(244,63,94,.10); color: rgb(225,29,72)\">Admission Closed</span>`;
+
+    const seatsText = c.enrollmentOpen ? `${c.seatsLeft} seats left` : `Waitlist available`;
+
+    const ctaLabel = c.enrollmentOpen ? 'Complete Registration' : 'Join Waitlist';
+    const ctaAction = c.enrollmentOpen
+      ? "toast('Registration flow coming soon (demo)')"
+      : "toast('Added to waitlist! (demo)')";
+
+    return `
+      <section class=\"mt-10\">
+        <div class=\"mb-6\">
+          <button onclick=\"go('/courses')\" class=\"text-sm font-medium hover:underline\" style=\"color:var(--accent)\">← Back to courses</button>
+        </div>
+
+        <!-- Header / Batch status -->
+        <div class=\"rounded-[32px] border bg-white p-7 md:p-10\" style=\"border-color:var(--border); box-shadow: var(--shadow)\">
+          <div class=\"flex flex-wrap items-center gap-2\">
+            <span class=\"rounded-full px-3 py-1 text-xs\" style=\"background:var(--accentSoft); color:var(--accent)\">${c.category}</span>
+            ${badge(c.level)}
+            ${badge(c.duration)}
+            ${badge(`${c.modules} Modules`)}
+            ${statusPill}
+          </div>
+
+          <div class=\"mt-4 grid gap-6 md:grid-cols-[1.4fr_1fr] md:items-start\">
+            <div>
+              <h1 class=\"text-3xl font-semibold tracking-tight md:text-4xl\">${c.title}</h1>
+              <p class=\"mt-3 text-base\" style=\"color:var(--muted)\">${c.subtitle}</p>
+
+              <div class=\"mt-6 grid gap-3 md:grid-cols-3\">
+                <div class=\"rounded-3xl border bg-white p-5\" style=\"border-color:var(--border)\">
+                  <div class=\"text-xs\" style=\"color:var(--muted)\">Batch starts</div>
+                  <div class=\"mt-1 text-sm font-semibold\">${c.batchStart}</div>
+                </div>
+                <div class=\"rounded-3xl border bg-white p-5\" style=\"border-color:var(--border)\">
+                  <div class=\"text-xs\" style=\"color:var(--muted)\">Seats</div>
+                  <div class=\"mt-1 text-sm font-semibold\">${seatsText}</div>
+                </div>
+                <div class=\"rounded-3xl border bg-white p-5\" style=\"border-color:var(--border)\">
+                  <div class=\"text-xs\" style=\"color:var(--muted)\">Format</div>
+                  <div class=\"mt-1 text-sm font-semibold\">Live cohort</div>
+                </div>
+              </div>
+
+              <div class=\"mt-6 rounded-3xl p-5\" style=\"background: rgba(2,6,23,.03)\">
+                <div class=\"text-sm font-semibold\">Important</div>
+                <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">This is not a pre-recorded video streaming course. You enroll into an active batch when admission is open.</div>
+              </div>
+            </div>
+
+            <div class=\"rounded-[28px] border bg-white p-6\" style=\"border-color:var(--border)\">
+              <div class=\"flex items-end justify-between\">
+                <div>
+                  <div class=\"text-sm\" style=\"color:var(--muted)\">Batch price</div>
+                  <div class=\"text-2xl font-semibold\">${c.price}</div>
+                </div>
+                <span class=\"rounded-full px-3 py-1 text-xs\" style=\"background: rgba(2,6,23,.04); color: var(--muted)\">One-time</span>
+              </div>
+
+              <button onclick=\"${ctaAction}\" class=\"mt-6 w-full rounded-2xl px-5 py-3 text-sm font-medium text-white hover:opacity-95\" style=\"background: var(--accent)\">${ctaLabel}</button>
+
+              <div class=\"mt-4 text-xs\" style=\"color:var(--muted)\">${c.enrollmentOpen ? 'Admission is open now. Complete registration before seats fill.' : 'Admission closed. Join waitlist to get notified when the next batch opens.'}</div>
+
+              <div class=\"mt-5 rounded-3xl p-5\" style=\"background: rgba(2,6,23,.03)\">
+                <div class=\"text-sm font-semibold\">What you get in this batch</div>
+                <div class=\"mt-3 grid gap-2 text-sm\" style=\"color:var(--muted)\">
+                  <div>• Live classes + roadmap</div>
+                  <div>• Assignments + feedback</div>
+                  <div>• Community support</div>
+                  <div>• Resources + templates</div>
+                </div>
+              </div>
+
+              <div class=\"mt-5 rounded-3xl border bg-white p-5\" style=\"border-color:var(--border)\">
+                <div class=\"text-sm font-semibold\">Need help choosing?</div>
+                <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">Message us for guidance based on your goal.</div>
+                <button onclick=\"go('/contact')\" class=\"mt-4 w-full rounded-2xl border px-4 py-3 text-sm hover:bg-black/5\" style=\"border-color:var(--border)\">Contact</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class=\"mt-10 grid gap-4 md:grid-cols-2\">
+          <div class=\"rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\">
+            <div class=\"text-sm font-semibold\">What you’ll learn</div>
+            <ul class=\"mt-3 space-y-2 text-sm\" style=\"color:var(--muted)\">
+              <li>• Clear systems (spacing, typography, components)</li>
+              <li>• Practical project workflow (real deliverables)</li>
+              <li>• Professional presentation + polish</li>
+              <li>• Q&A + feedback during live batch</li>
+            </ul>
+          </div>
+          <div class=\"rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\">
+            <div class=\"text-sm font-semibold\">Who it’s for</div>
+            <ul class=\"mt-3 space-y-2 text-sm\" style=\"color:var(--muted)\">
+              <li>• Beginners who want a clean foundation</li>
+              <li>• Freelancers upgrading quality</li>
+              <li>• Devs/designers building portfolios</li>
+              <li>• Anyone who learns better with structure + accountability</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Curriculum -->
+        <div class=\"mt-10\">
+          <div class=\"flex items-end justify-between gap-4\">
+            <div>
+              <div class=\"text-xs font-semibold\" style=\"color:var(--accent)\">Curriculum</div>
+              <div class=\"mt-2 text-lg font-semibold\">Curriculum (demo)</div>
+              <div class=\"mt-1 text-sm\" style=\"color:var(--muted)\">Replace with your real week-by-week live plan.</div>
+            </div>
+            <button onclick=\"openModal()\" class=\"text-sm font-medium hover:underline\" style=\"color:var(--accent)\">How live batches work →</button>
+          </div>
+
+          <div class=\"mt-4 grid gap-3\">
+            ${[1,2,3,4].map((n)=>`
+              <details class=\"rounded-3xl border bg-white p-5\" style=\"border-color:var(--border)\" ${n===1?'open':''}>
+                <summary class=\"cursor-pointer text-sm font-semibold\">Week ${n}: Live session plan</summary>
+                <div class=\"mt-3 grid gap-2 text-sm\" style=\"color:var(--muted)\">
+                  <div>• Live class: Core concept + demo</div>
+                  <div>• Assignment: Apply to your project</div>
+                  <div>• Support: Q&A / feedback / community</div>
+                </div>
+              </details>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- Instructor -->
+        <div class=\"mt-10 rounded-[32px] border bg-white p-8\" style=\"border-color:var(--border); box-shadow: var(--shadow)\">
+          <div class=\"flex flex-col gap-4 md:flex-row md:items-center md:justify-between\">
+            <div>
+              <div class=\"text-sm font-semibold\">Instructor</div>
+              <div class=\"mt-1 text-sm\" style=\"color:var(--muted)\">Shafayetul Islam Pavel</div>
+              <p class=\"mt-3 text-sm\" style=\"color:var(--muted)\">Creator of modern front-end libraries and a mentor focused on product-level thinking.</p>
+            </div>
+            <div class=\"flex flex-wrap gap-3\">
+              <button onclick=\"go('/about')\" class=\"rounded-2xl border px-5 py-3 text-sm hover:bg-black/5\" style=\"border-color: var(--border)\">View profile</button>
+              <button onclick=\"go('/courses')\" class=\"rounded-2xl px-5 py-3 text-sm font-medium text-white\" style=\"background: var(--accent)\">See all batches</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function aboutPage(){
+    return `
+      <section class=\"mt-10\">
+        <div class=\"rounded-[32px] border bg-white p-8 md:p-12\" style=\"border-color:var(--border); box-shadow:var(--shadow)\">
+          <div class=\"grid gap-8 md:grid-cols-[1fr_1.2fr] md:items-center\">
+            <div class=\"rounded-[28px] border bg-white p-6\" style=\"border-color:var(--border)\">
+              <div class=\"aspect-square rounded-2xl grid place-items-center\" style=\"background: rgba(37,99,235,.10); color: var(--accent)\">
+                <div class=\"text-center\">
+                  <div class=\"text-4xl font-semibold\">P</div>
+                  <div class=\"mt-2 text-xs\" style=\"color:var(--muted)\">Replace with your photo</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class=\"text-xs font-semibold\" style=\"color:var(--accent)\">Instructor</div>
+              <h1 class=\"mt-2 text-3xl font-semibold tracking-tight md:text-4xl\">Shafayetul Islam Pavel</h1>
+              <p class=\"mt-4 text-sm leading-relaxed\" style=\"color:var(--muted)\">
+                Web designer, front-end lead, PMP certified — and creator of developer-focused tools. Build With Pavel is where I teach Bangla learners to build modern UI, clean systems, and premium motion.
+              </p>
+              <div class=\"mt-6 flex flex-wrap gap-2\">
+                ${badge('Creator of cssanimation.io')}
+                ${badge('GSAP + Motion')}
+                ${badge('Project mindset')}
+                ${badge('Portfolio-focused')}
+              </div>
+              <div class=\"mt-8 flex flex-wrap gap-3\">
+                <button onclick=\"go('/courses')\" class=\"rounded-2xl px-5 py-3 text-sm font-medium text-white\" style=\"background: var(--accent)\">Explore courses</button>
+                <button onclick=\"go('/contact')\" class=\"rounded-2xl border px-5 py-3 text-sm hover:bg-black/5\" style=\"border-color: var(--border)\">Contact</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=\"mt-10 grid gap-4 md:grid-cols-3\">
+          ${[
+            ['Teaching style','Conversational, practical, and case-study heavy.'],
+            ['What you’ll learn','UI systems, frontend patterns, and motion polish.'],
+            ['Outcome','Real projects you can showcase and sell skills with.'],
+          ].map(([t,d])=>`
+            <div class=\"lift rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\">
+              <div class=\"text-sm font-semibold\">${t}</div>
+              <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">${d}</div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  function faqsPage(){
+    const faqs = [
+      ['Is this platform fully in Bangla?', 'Yes — courses and explanations are Bangla-first, with English terms when necessary.'],
+      ['Do I get lifetime access?', 'For one-time purchases, yes. You’ll also receive future updates for that course.'],
+      ['Will there be certificates?', 'Certificate support can be added later (Phase 2). The real focus is portfolio outcomes.'],
+      ['Do I need prior experience?', 'Depends on the course. Beginner tracks start from zero and build up step-by-step.'],
+      ['What payment methods?', 'Stripe/LemonSqueezy/SSLCOMMERZ can be integrated based on your preference.'],
+    ];
+
+    return `
+      <section class=\"mt-10\">
+        <div class=\"flex items-end justify-between\">
+          <div>
+            <h1 class=\"text-3xl font-semibold tracking-tight\">FAQs</h1>
+            <p class=\"mt-2 text-sm\" style=\"color:var(--muted)\">Quick answers — modeled like the example site.</p>
+          </div>
+        </div>
+
+        <div class=\"mt-6 grid gap-3\">
+          ${faqs.map(([q,a],i)=>`
+            <details class=\"rounded-3xl border bg-white p-6\" style=\"border-color:var(--border)\" ${i===0?'open':''}>
+              <summary class=\"cursor-pointer text-sm font-semibold\">${q}</summary>
+              <div class=\"mt-3 text-sm\" style=\"color:var(--muted)\">${a}</div>
+            </details>
+          `).join('')}
+        </div>
+
+        <div class=\"mt-10 rounded-[32px] border bg-white p-8 md:p-10\" style=\"border-color:var(--border); box-shadow:var(--shadow)\">
+          <div class=\"grid gap-6 md:grid-cols-2 md:items-center\">
+            <div>
+              <div class=\"text-sm font-semibold\">Need personalized guidance?</div>
+              <div class=\"mt-2 text-sm\" style=\"color:var(--muted)\">Tell me your goal — I’ll recommend the best starting course.</div>
+            </div>
+            <div class=\"flex flex-wrap gap-3 md:justify-end\">
+              <button onclick=\"go('/contact')\" class=\"rounded-2xl px-5 py-3 text-sm font-medium text-white\" style=\"background: var(--accent)\">Contact</button>
+              <button onclick=\"go('/courses')\" class=\"rounded-2xl border px-5 py-3 text-sm hover:bg-black/5\" style=\"border-color: var(--border)\">Explore courses</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function contactPage(){
+    return `
+      <section class="mt-10">
+        <div class="rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="grid gap-8 md:grid-cols-2 md:items-start">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">Contact</h1>
+              <p class="mt-3 text-sm" style="color:var(--muted)">Ask about course guidance, bundles, or support.</p>
+              <div class="mt-6 grid gap-3">
+                <div class="rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="text-xs" style="color:var(--muted)">Email</div>
+                  <div class="mt-1 text-sm font-semibold">support@buildwithpavel.com</div>
+                </div>
+                <div class="rounded-3xl border bg-white p-5" style="border-color:var(--border)">
+                  <div class="text-xs" style="color:var(--muted)">Social</div>
+                  <div class="mt-1 text-sm font-semibold">YouTube • LinkedIn • Facebook</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-[28px] border bg-white p-6" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">Send a message (demo)</div>
+              <div class="mt-4 grid gap-3">
+                <input class="rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)" placeholder="Your name" />
+                <input class="rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)" placeholder="Your email" />
+                <textarea class="min-h-[120px] rounded-2xl border px-4 py-3 text-sm" style="border-color:var(--border)" placeholder="Your message"></textarea>
+                <button onclick="toast('Message sent! (demo)')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">Submit</button>
+                <div class="text-xs" style="color:var(--muted)">This is a UI preview. Hook to email/API later.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // --- New Pages
+  function upcomingBatchesPage(){
+    const open = courses.filter(c=>c.enrollmentOpen);
+    const closed = courses.filter(c=>!c.enrollmentOpen);
+
+    return `
+      <section class="mt-10">
+        <div class="rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="grid gap-8 md:grid-cols-[1.1fr_.9fr] md:items-start">
+            <div>
+              <div class="inline-flex items-center gap-2 rounded-full border bg-white px-3 py-1 text-xs" style="border-color:var(--border); color:var(--muted)">
+                <span class="h-2 w-2 rounded-full" style="background: rgb(239,68,68)"></span>
+                Live Batches
+              </div>
+              <h1 class="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">আপকামিং লাইভ ব্যাচ</h1>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">
+                এখানে আপনি active/আসন্ন ব্যাচগুলো দেখবেন। <b>Admission open</b> থাকলে registration করা যাবে— এটা কোনো pre-recorded ভিডিও প্ল্যাটফর্ম না।
+              </p>
+
+              <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                ${[
+                  ['🔴','Admission window','Open থাকলে তবেই enroll'],
+                  ['🎯','Outcome','Portfolio-ready project'],
+                  ['💬','Support','Live Q&A + feedback'],
+                ].map(([i,t,d])=>`
+                  <div class="rounded-3xl border bg-white/80 p-5" style="border-color:var(--border)">
+                    <div class="text-xl">${i}</div>
+                    <div class="mt-2 text-sm font-semibold">${t}</div>
+                    <div class="mt-1 text-xs" style="color:var(--muted)">${d}</div>
+                  </div>
+                `).join('')}
+              </div>
+
+              <div class="mt-7 flex flex-wrap gap-3">
+                <button onclick="openModal()" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">How it works</button>
+                <button onclick="go('/contact')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background:var(--accent)">Need guidance?</button>
+              </div>
+            </div>
+
+            <div class="rounded-[28px] border bg-white p-6" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">Quick actions</div>
+              <div class="mt-4 grid gap-3">
+                <button onclick="toast('Waitlist flow coming soon')" class="lift rounded-2xl border bg-white px-4 py-3 text-left text-sm" style="border-color:var(--border)">Join waitlist (demo)</button>
+                <button onclick="toast('Notify me coming soon')" class="lift rounded-2xl border bg-white px-4 py-3 text-left text-sm" style="border-color:var(--border)">Get batch alerts (demo)</button>
+                <button onclick="go('/blog')" class="lift rounded-2xl border bg-white px-4 py-3 text-left text-sm" style="border-color:var(--border)">Read tips + resources</button>
+              </div>
+              <div class="mt-5 rounded-3xl p-5" style="background: rgba(2,6,23,.03)">
+                <div class="text-sm font-semibold">Tip</div>
+                <div class="mt-2 text-sm" style="color:var(--muted)">Closed batch হলে waitlist এ থাকুন— next admission open হলেই notify করা হবে।</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <div class="flex items-end justify-between gap-3">
+            <div>
+              <div class="text-xs font-semibold" style="color:rgb(5,150,105)">Admission Open</div>
+              <div class="mt-1 text-lg font-semibold">Open batches right now</div>
+            </div>
+            <button onclick="go('/courses')" class="text-sm font-medium hover:underline" style="color:var(--accent)">See all courses →</button>
+          </div>
+          <div class="mt-5 grid gap-4 md:grid-cols-3">${open.map(courseCard).join('') || `<div class="rounded-3xl border bg-white p-6" style="border-color:var(--border)"><div class="text-sm font-semibold">No open batches right now</div><div class="mt-2 text-sm" style="color:var(--muted)">Join waitlist to get notified when admission opens.</div></div>`}</div>
+        </div>
+
+        <div class="mt-10">
+          <div class="text-xs font-semibold" style="color:rgb(225,29,72)">Batch Closed</div>
+          <div class="mt-1 text-lg font-semibold">Upcoming / closed batches</div>
+          <div class="mt-5 grid gap-4 md:grid-cols-3">${closed.map(courseCard).join('')}</div>
+        </div>
+      </section>
+    `;
+  }
+
+  function workshopsPage(){
+    const workshops = [
+      {title:'UI Audit Workshop (Live)', date:'Mar 08, 2026', time:'8:30 PM BD', seats:60, price:'৳ 490', tag:'Live workshop', desc:'Real website UI audit + fix roadmap. Hands-on.'},
+      {title:'GSAP Motion Basics (Live)', date:'Mar 22, 2026', time:'9:00 PM BD', seats:40, price:'৳ 690', tag:'Live workshop', desc:'Timeline, easing, and scroll storytelling fundamentals.'},
+      {title:'Portfolio Review Night', date:'Apr 12, 2026', time:'9:00 PM BD', seats:30, price:'৳ 390', tag:'Live workshop', desc:'Bring your work—get feedback + next steps.'},
+    ];
+
+    const card = (w)=>`
+      <div class="lift rounded-3xl border bg-white p-6" style="border-color:var(--border)">
+        <div class="flex items-center justify-between gap-3">
+          <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(124,58,237,.10); color: var(--accent2)">${w.tag}</span>
+          <div class="text-sm font-semibold">${w.price}</div>
+        </div>
+        <div class="mt-4 text-lg font-semibold">${w.title}</div>
+        <div class="mt-2 text-sm" style="color:var(--muted)">${w.desc}</div>
+        <div class="mt-5 flex flex-wrap gap-2">
+          ${badge(`📅 ${w.date}`)}
+          ${badge(`⏰ ${w.time}`)}
+          ${badge(`👥 ${w.seats} seats`)}
+        </div>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button onclick="toast('Workshop registration coming soon')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">Register</button>
+          <button onclick="toast('Workshop details coming soon')" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">See details</button>
+        </div>
+      </div>
+    `;
+
+    return `
+      <section class="mt-10">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div class="text-xs font-semibold" style="color:var(--accent2)">Live Workshops</div>
+            <h1 class="mt-2 text-3xl font-semibold tracking-tight">লাইভ ওয়ার্কশপ</h1>
+            <p class="mt-2 text-sm" style="color:var(--muted)">Short, focused live sessions — practice + feedback. Perfect for দ্রুত upgrade.</p>
+          </div>
+          <button onclick="go('/batches')" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">See Live Batches</button>
+        </div>
+
+        <div class="mt-6 grid gap-4 md:grid-cols-3">${workshops.map(card).join('')}</div>
+
+        <div class="mt-10 rounded-[32px] border bg-white p-8 md:p-10" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="grid gap-6 md:grid-cols-2 md:items-center">
+            <div>
+              <div class="text-sm font-semibold">Want a workshop for your company/team?</div>
+              <div class="mt-2 text-sm" style="color:var(--muted)">We can run a custom live workshop based on your team’s real workflow.</div>
+            </div>
+            <div class="flex flex-wrap gap-3 md:justify-end">
+              <button onclick="go('/contact')" class="rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">Request workshop</button>
+              <button onclick="toast('Menu coming soon')" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">See workshop menu</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function blogPage(){
+    const posts = [
+      {slug:'clean-ui-system-bangla', tag:'UI/UX', title:'কিভাবে একটা clean UI system বানাবে — Bangla guide', seed:'A', date:'Feb 2026', read:'4 min'},
+      {slug:'responsive-layout-rules', tag:'Frontend', title:'Responsive layout শেখার 7টা practical rule', seed:'B', date:'Feb 2026', read:'3 min'},
+      {slug:'gsap-scroll-roadmap', tag:'Motion', title:'GSAP basics: scroll animation শুরু করার সহজ roadmap', seed:'C', date:'Feb 2026', read:'5 min'},
+      {slug:'portfolio-checklist', tag:'Career', title:'Portfolio checklist: BD market-এ কী কী দরকার', seed:'A', date:'Feb 2026', read:'4 min'},
+      {slug:'ui-spacing-typography', tag:'UI/UX', title:'Spacing + typography — premium look পাওয়ার shortcut', seed:'B', date:'Feb 2026', read:'4 min'},
+      {slug:'freelance-quality-upgrade', tag:'Freelance', title:'Client-ready quality: freelancing income বাড়ানোর 5টা rule', seed:'C', date:'Feb 2026', read:'5 min'},
+    ];
+
+    return `
+      <section class="mt-10">
+        <div class="rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div class="text-xs font-semibold" style="color:var(--accent)">Blog</div>
+              <h1 class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">ব্লগ</h1>
+              <p class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">Short reads in Bangla — tips, resources, and live batch admission updates.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <input id="blogSearch" oninput="renderBlogGrid()" class="rounded-2xl border px-4 py-3 text-sm w-full md:w-[320px]" style="border-color:var(--border)" placeholder="Search posts (UI, GSAP, portfolio...)" />
+              <button onclick="toast('Filter coming soon')" class="rounded-2xl border px-4 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">Filter</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 grid gap-4 md:grid-cols-3" id="blogGrid">
+          ${posts.map(p=>`
+            <div onclick="go('/blog/${p.slug}')" class="cursor-pointer">
+              ${blogCard(p.tag, p.title, p.seed)}
+              <div class="mt-2 flex items-center justify-between px-1 text-xs" style="color:var(--muted)">
+                <span>${p.date}</span>
+                <span>${p.read} read</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  function blogDetailPage(slug){
+    const map = {
+      'clean-ui-system-bangla': {title:'কিভাবে একটা clean UI system বানাবে — Bangla guide', tag:'UI/UX'},
+      'responsive-layout-rules': {title:'Responsive layout শেখার 7টা practical rule', tag:'Frontend'},
+      'gsap-scroll-roadmap': {title:'GSAP basics: scroll animation শুরু করার সহজ roadmap', tag:'Motion'},
+      'portfolio-checklist': {title:'Portfolio checklist: BD market-এ কী কী দরকার', tag:'Career'},
+      'ui-spacing-typography': {title:'Spacing + typography — premium look পাওয়ার shortcut', tag:'UI/UX'},
+      'freelance-quality-upgrade': {title:'Client-ready quality: freelancing income বাড়ানোর 5টা rule', tag:'Freelance'},
+    };
+    const p = map[slug];
+    if(!p){
+      return `
+        <section class="mt-10">
+          <h1 class="text-2xl font-semibold">Post not found</h1>
+          <p class="mt-2 text-sm" style="color:var(--muted)">This blog post doesn’t exist yet.</p>
+          <button onclick="go('/blog')" class="mt-6 text-sm font-medium hover:underline" style="color:var(--accent)">Back to blog →</button>
+        </section>
+      `;
+    }
+
+    return `
+      <section class="mt-10">
+        <button onclick="go('/blog')" class="text-sm font-medium hover:underline" style="color:var(--accent)">← Back to blog</button>
+
+        <div class="mt-6 rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-full px-3 py-1 text-xs" style="background:var(--accentSoft); color:var(--accent)">${p.tag}</span>
+            <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(2,6,23,.04); color: var(--muted)">Bangla</span>
+            <span class="rounded-full px-3 py-1 text-xs" style="background: rgba(2,6,23,.04); color: var(--muted)">Demo article</span>
+          </div>
+          <h1 class="mt-4 text-3xl font-semibold tracking-tight md:text-4xl">${p.title}</h1>
+          <p class="mt-4 text-sm leading-relaxed" style="color:var(--muted)">This is a placeholder blog post layout. Replace with your real content later.</p>
+
+          <div class="mt-8 grid gap-4 md:grid-cols-[1.6fr_1fr] md:items-start">
+            <article class="rounded-3xl border bg-white p-6" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">Quick outline</div>
+              <ul class="mt-3 space-y-2 text-sm" style="color:var(--muted)">
+                <li>• Problem: where beginners get stuck</li>
+                <li>• Simple framework you can follow</li>
+                <li>• Real example + checklist</li>
+                <li>• Next steps + recommended batch</li>
+              </ul>
+              <div class="mt-6 rounded-3xl p-5" style="background: rgba(2,6,23,.03)">
+                <div class="text-sm font-semibold">Want to learn this live?</div>
+                <div class="mt-2 text-sm" style="color:var(--muted)">Join a live batch when admission is open — you’ll build a real project with feedback.</div>
+                <button onclick="go('/batches')" class="mt-4 rounded-2xl px-5 py-3 text-sm font-medium text-white" style="background: var(--accent)">See live batches</button>
+              </div>
+            </article>
+
+            <aside class="rounded-3xl border bg-white p-6" style="border-color:var(--border)">
+              <div class="text-sm font-semibold">Related</div>
+              <div class="mt-4 grid gap-3">
+                <button onclick="go('/batches')" class="lift rounded-2xl border bg-white px-4 py-3 text-left text-sm" style="border-color:var(--border)">Upcoming live batches</button>
+                <button onclick="go('/workshops')" class="lift rounded-2xl border bg-white px-4 py-3 text-left text-sm" style="border-color:var(--border)">Live workshops</button>
+                <button onclick="toast('Subscribe below')" class="lift rounded-2xl border bg-white px-4 py-3 text-left text-sm" style="border-color:var(--border)">Get tips in inbox</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function policyShell(title, blocks){
+    return `
+      <section class="mt-10">
+        <div class="rounded-[32px] border bg-white p-8 md:p-12" style="border-color:var(--border); box-shadow:var(--shadow)">
+          <div class="flex items-end justify-between gap-4">
+            <div>
+              <h1 class="text-3xl font-semibold tracking-tight">${title}</h1>
+              <p class="mt-3 text-sm" style="color:var(--muted)">Demo policy copy — replace with your official legal text.</p>
+            </div>
+            <button onclick="go('/contact')" class="rounded-2xl border px-5 py-3 text-sm hover:bg-black/5" style="border-color:var(--border)">Questions?</button>
+          </div>
+
+          <div class="mt-8 grid gap-3">
+            ${blocks.map(([h,d],i)=>`
+              <details class="rounded-3xl border bg-white p-6" style="border-color:var(--border)" ${i===0?'open':''}>
+                <summary class="cursor-pointer text-sm font-semibold">${h}</summary>
+                <div class="mt-3 text-sm leading-relaxed" style="color:var(--muted)">${d}</div>
+              </details>
+            `).join('')}
+          </div>
+
+          <div class="mt-10 rounded-3xl p-6" style="background: rgba(2,6,23,.03)">
+            <div class="text-sm font-semibold">Note</div>
+            <div class="mt-2 text-sm" style="color:var(--muted)">Build With Pavel sells <b>live batches</b>. Admission windows, refund terms, and policies may vary by batch. Always check the course page before paying.</div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  function refundPolicyPage(){
+    return policyShell('রিফান্ড পলিসি', [
+      ['7-day satisfaction guarantee', 'প্রথম সপ্তাহে যদি ক্লাস পছন্দ না হয় — simple refund policy. No awkward questions. (Demo copy)'],
+      ['Eligibility', 'Refund only applies within the first 7 days of batch start date (or within first week).'],
+      ['How to request', 'Email support@buildwithpavel.com with your registration details.'],
+      ['Exceptions', 'If you violate community rules or misuse resources, refund may be denied.'],
+    ]);
+  }
+
+  function privacyPolicyPage(){
+    return policyShell('প্রাইভেসি পলিসি', [
+      ['What we collect', 'Name, email, and course enrollment info. Payment data is handled by the payment provider.'],
+      ['How we use it', 'To deliver batches, send updates, and improve learning experience.'],
+      ['Cookies', 'We may use cookies for analytics and basic site functionality.'],
+      ['Your rights', 'You can request deletion/export of your data by contacting support.'],
+    ]);
+  }
+
+  function termsPage(){
+    return policyShell('টার্মস এবং শর্তাবলী', [
+      ['Live batch nature', 'Batches run live with a schedule. Missing sessions may reduce outcomes.'],
+      ['Code of conduct', 'Respect instructors and classmates. No harassment, spamming, or piracy.'],
+      ['Payments', 'Seats are limited. Admission may close anytime when seats fill.'],
+      ['Intellectual property', 'Course materials are for personal learning only. No redistribution.'],
+    ]);
+  }
+
+  function renderBlogGrid(){
+    const grid = document.getElementById('blogGrid');
+    if(!grid) return;
+    const q = (document.getElementById('blogSearch')?.value || '').toLowerCase();
+    // Re-render by navigating (simple demo)
+    // In a real app we would store posts in state; for now just show a toast.
+    if(q.trim().length){
+      toast('Search UI is demo — wire posts data later');
+    }
+  }
+
+  // --- Courses page state
+  let categoryFilter = 'all';
+
+  function filterCategory(cat){
+    categoryFilter = cat;
+    renderCoursesGrid();
+  }
+
+  function renderCoursesGrid(){
+    const grid = document.getElementById('coursesGrid');
+    if(!grid) return;
+
+    const query = (document.getElementById('search')?.value || '').toLowerCase();
+
+    const filtered = courses
+      .filter(c => categoryFilter === 'all' ? true : c.category === categoryFilter)
+      .filter(c => {
+        const blob = `${c.title} ${c.subtitle} ${c.category} ${c.level} ${c.tag}`.toLowerCase();
+        return blob.includes(query);
+      });
+
+    document.getElementById('resultCount').textContent = `${filtered.length} course(s) found`;
+
+    grid.innerHTML = filtered.map(courseCard).join('');
+  }
+
+  // --- Testimonials state
+  let tIndex = 0;
+
+  function paintTestimonial(){
+    const t = testimonials[tIndex];
+    const q = document.getElementById('t_quote');
+    const n = document.getElementById('t_name');
+    const m = document.getElementById('t_meta');
+    if(q) q.textContent = t.quote;
+    if(n) n.textContent = t.name;
+    if(m) m.textContent = t.meta;
+    updateTestimonialDots();
+  }
+
+  function setTestimonial(i){
+    tIndex = Math.max(0, Math.min(testimonials.length - 1, i));
+    paintTestimonial();
+  }
+
+  function updateTestimonialDots(){
+    for(let i=0;i<testimonials.length;i++){
+      const d = document.getElementById(`dot_${i}`);
+      if(!d) continue;
+      d.style.background = (i===tIndex) ? 'var(--accent)' : 'rgba(15,23,42,.18)';
+    }
+  }
+
+  function nextTestimonial(){
+    tIndex = (tIndex + 1) % testimonials.length;
+    paintTestimonial();
+  }
+  function prevTestimonial(){
+    tIndex = (tIndex - 1 + testimonials.length) % testimonials.length;
+    paintTestimonial();
+  }
+
+  // --- Open carousel controls
+  function scrollOpenCarousel(dir){
+    const el = document.getElementById('openCarousel');
+    if(!el) return;
+    const step = Math.min(380, el.clientWidth * 0.85);
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  }
+
+  // --- Router
+  function go(path){
+    location.hash = `#${path}`;
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function render(){
+    const hash = (location.hash || '#/').slice(1);
+    const app = document.getElementById('app');
+
+    if(hash === '/' || hash === ''){
+      app.innerHTML = homePage();
+      requestAnimationFrame(()=>{
+        paintTestimonial();
+        revealOnScroll();
+        animateCounters();
+      });
+      return;
+    }
+
+    if(hash === '/courses'){
+      app.innerHTML = coursesPage();
+      requestAnimationFrame(()=>{
+        renderCoursesGrid();
+        revealOnScroll();
+      });
+      return;
+    }
+
+    if(hash.startsWith('/courses/')){
+      const slug = hash.split('/')[2] || '';
+      app.innerHTML = courseDetail(slug);
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/batches'){
+      app.innerHTML = upcomingBatchesPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/workshops'){
+      app.innerHTML = workshopsPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/blog'){
+      app.innerHTML = blogPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash.startsWith('/blog/')){
+      const slug = hash.split('/')[2] || '';
+      app.innerHTML = blogDetailPage(slug);
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/about'){
+      app.innerHTML = aboutPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/faqs'){
+      app.innerHTML = faqsPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/contact'){
+      app.innerHTML = contactPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/refund'){
+      app.innerHTML = refundPolicyPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/privacy'){
+      app.innerHTML = privacyPolicyPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    if(hash === '/terms'){
+      app.innerHTML = termsPage();
+      requestAnimationFrame(()=> revealOnScroll());
+      return;
+    }
+
+    app.innerHTML = `
+      <section class=\"mt-10\">
+        <h1 class=\"text-2xl font-semibold\">Page not found</h1>
+        <p class=\"mt-2 text-sm\" style=\"color:var(--muted)\">Try the navigation links.</p>
+        <button onclick=\"go('/')\" class=\"mt-6 text-sm font-medium hover:underline\" style=\"color:var(--accent)\">Go home →</button>
+      </section>
+    `;
+  }
+
+  function revealOnScroll(){
+    // add reveal class to key blocks
+    document.querySelectorAll('section, details, .lift').forEach(el=>{
+      if(!el.classList.contains('reveal')) el.classList.add('reveal');
+    });
+
+    const els = Array.from(document.querySelectorAll('.reveal'));
+
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('show');
+      });
+    }, { threshold: 0.08 });
+
+    els.forEach(el=>obs.observe(el));
+  }
+
+  function animateCounters(){
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = Array.from(document.querySelectorAll('.counter'));
+    if(!els.length) return;
+
+    const seen = new WeakSet();
+
+    const tick = (el)=>{
+      const target = Number(el.getAttribute('data-target') || '0');
+      const suffix = el.getAttribute('data-suffix') || '';
+      if(reduce){
+        el.textContent = `${target}${suffix}`;
+        return;
+      }
+      const duration = 900;
+      const start = performance.now();
+      const from = 0;
+
+      const step = (now)=>{
+        const p = Math.min(1, (now - start) / duration);
+        // easeOutCubic
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.round(from + (target - from) * eased);
+        el.textContent = `${val}${suffix}`;
+        if(p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting && !seen.has(e.target)){
+          seen.add(e.target);
+          tick(e.target);
+        }
+      });
+    }, { threshold: 0.4 });
+
+    els.forEach(el=>io.observe(el));
+  }
+
+  window.addEventListener('hashchange', render);
+  render();
+</script>
+
+  </body>
+</html>
