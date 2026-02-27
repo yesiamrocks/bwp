@@ -1,0 +1,46 @@
+<footer class="mt-16 border-t bg-white">
+  <div class="mx-auto max-w-6xl px-4 py-10">
+    <div class="grid gap-8 md:grid-cols-4">
+      <div>
+        <div class="text-sm font-semibold">Build With Pavel</div>
+        <div class="mt-2 text-sm text-slate-500">Learn UI/UX with live guidance and portfolio outcomes.</div>
+      </div>
+
+      <div>
+        <div class="text-sm font-semibold">Explore</div>
+        <div class="mt-3 grid gap-2 text-sm">
+          <a class="text-slate-600 hover:text-slate-900" href="javascript:void(0)" onclick="go('courses/index.html')">Courses</a>
+          <a class="text-slate-600 hover:text-slate-900" href="javascript:void(0)" onclick="go('about/index.html')">About</a>
+          <a class="text-slate-600 hover:text-slate-900" href="javascript:void(0)" onclick="go('contact/index.html')">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-sm font-semibold">Legal</div>
+        <div class="mt-3 grid gap-2 text-sm">
+          <a class="text-slate-600 hover:text-slate-900" href="javascript:void(0)" onclick="go('legal/terms.html')">Terms</a>
+          <a class="text-slate-600 hover:text-slate-900" href="javascript:void(0)" onclick="go('legal/privacy.html')">Privacy</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-sm font-semibold">Get updates</div>
+        <div class="mt-3 flex gap-2">
+          <input id="footerEmail" class="w-full rounded-2xl border px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-900/10" placeholder="Email address" />
+          <button class="rounded-2xl bg-slate-900 px-4 py-2 text-sm text-white hover:bg-slate-800" onclick="subscribeFooter()">Join</button>
+        </div>
+        <div class="mt-2 text-xs text-slate-500">No spam. Batch notifications only.</div>
+      </div>
+    </div>
+
+    <div class="soft-divider my-8"></div>
+
+    <div class="flex flex-col gap-2 text-xs text-slate-500 md:flex-row md:items-center md:justify-between">
+      <div>© <span id="year"></span> Build With Pavel. All rights reserved.</div>
+      <div class="flex gap-3">
+        <a class="hover:text-slate-900" href="javascript:void(0)" onclick="go('legal/terms.html')">Terms</a>
+        <a class="hover:text-slate-900" href="javascript:void(0)" onclick="go('legal/privacy.html')">Privacy</a>
+      </div>
+    </div>
+  </div>
+</footer>

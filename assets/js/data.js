@@ -1,0 +1,12 @@
+window.BWP_DATA={featured:[
+{id:"uiux-foundations-bangla",title:"UI/UX Foundations (Bangla)",level:"Beginner",duration:"6 weeks",price:"৳ 4,999",status:"open",tags:["UI","UX","Basics"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"uiux-to-job-portfolio",title:"UI/UX to Job-ready Portfolio",level:"Intermediate",duration:"8 weeks",price:"৳ 7,999",status:"waitlist",tags:["Portfolio","Case Study"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"figma-masterclass",title:"Figma Masterclass",level:"Beginner",duration:"4 weeks",price:"৳ 3,999",status:"open",tags:["Figma","Auto-layout"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"}
+],courses:[
+{id:"uiux-foundations-bangla",title:"UI/UX Foundations (Bangla)",level:"Beginner",duration:"6 weeks",price:"৳ 4,999",status:"open",tags:["UI","UX","Basics"],outcomes:["UX thinking","Wireframes","Simple UI screens"],includes:["Live classes","Assignments","Community"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"uiux-to-job-portfolio",title:"UI/UX to Job-ready Portfolio",level:"Intermediate",duration:"8 weeks",price:"৳ 7,999",status:"waitlist",tags:["Portfolio","Case Study"],outcomes:["2 case studies","Portfolio polish","Interview readiness"],includes:["Live critiques","Templates","Mentorship"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"figma-masterclass",title:"Figma Masterclass",level:"Beginner",duration:"4 weeks",price:"৳ 3,999",status:"open",tags:["Figma","Auto-layout"],outcomes:["Speed in Figma","Reusable components"],includes:["Practice files","Exercises"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"web-design-bootcamp",title:"Web Design Bootcamp",level:"Beginner",duration:"6 weeks",price:"৳ 5,999",status:"waitlist",tags:["Web","Design"],outcomes:["Landing page design","Responsive UI"],includes:["Live batch","Feedback"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"design-systems",title:"Design Systems Essentials",level:"Intermediate",duration:"5 weeks",price:"৳ 6,499",status:"closed",tags:["System","Components"],outcomes:["Tokens","Component library"],includes:["Guidelines","Reviews"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"},
+{id:"client-ready-uiux",title:"Client-ready UI/UX (Freelancers)",level:"Intermediate",duration:"5 weeks",price:"৳ 6,999",status:"open",tags:["Client","Freelance"],outcomes:["Proposal-ready process","Delivery workflow"],includes:["Docs pack","Mentoring"],video:"https://www.youtube.com/embed/dQw4w9WgXcQ"}
+]};
